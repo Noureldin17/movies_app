@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'colors.dart' as colors;
 
-List<Widget> OnBoardingList = [
+List<Widget> onBoardingList = [
   Column(
     children: [
       Stack(

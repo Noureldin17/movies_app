@@ -2,7 +2,6 @@ import 'package:movies_app/utils/default_text.dart';
 
 import '../../../../utils/pages.dart' as pages;
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:movies_app/features/authentication/presentation/widgets/custom_outline.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:movies_app/features/authentication/presentation/widgets/onboarding_item.dart';
@@ -32,9 +31,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               width: 100.w,
               height: 90.h,
               child: PageView.builder(
-                itemCount: onboarding.OnBoardingList.length,
+                itemCount: onboarding.onBoardingList.length,
                 itemBuilder: (context, index) =>
-                    OnBoardingItem(item: onboarding.OnBoardingList[index]),
+                    OnBoardingItem(item: onboarding.onBoardingList[index]),
                 physics: const BouncingScrollPhysics(),
                 controller: controller,
                 onPageChanged: (value) {
@@ -60,7 +59,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 children: [
                   SmoothPageIndicator(
                     controller: controller,
-                    count: onboarding.OnBoardingList.length,
+                    count: onboarding.onBoardingList.length,
                     effect: ExpandingDotsEffect(
                         dotHeight: 5.sp,
                         dotWidth: 5.sp,

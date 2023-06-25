@@ -1,4 +1,4 @@
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 
 class OnBoardingItem extends StatelessWidget {
   const OnBoardingItem({super.key, required this.item});
