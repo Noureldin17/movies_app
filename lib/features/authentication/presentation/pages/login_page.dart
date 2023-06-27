@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_loadingindicator/flutter_loadingindicator.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:movies_app/features/authentication/presentation/bloc/authentication_bloc.dart';
@@ -19,7 +19,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final formkey = GlobalKey();
+  final formkey = GlobalKey<FormState>();
+  final usernamekey = GlobalKey<FormFieldState>();
+  final passwordkey = GlobalKey<FormFieldState>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool passwordHidden = true;
@@ -44,6 +46,19 @@ class _LoginPageState extends State<LoginPage> {
                       padding: EdgeInsets.only(
                           top: 50.sp, left: 10.sp, right: 10.sp),
                       child: TextFormField(
+                        key: usernamekey,
+                        onChanged: (value) {
+                          usernamekey.currentState!.validate();
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Field is empty please enter your username";
+                          } else if (value.length < 4) {
+                            return "Username should be at least 4 characters long";
+                          } else {
+                            return null;
+                          }
+                        },
                         controller: usernameController,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
@@ -79,6 +94,19 @@ class _LoginPageState extends State<LoginPage> {
                       padding: EdgeInsets.only(
                           top: 20.sp, left: 10.sp, right: 10.sp),
                       child: TextFormField(
+                        key: passwordkey,
+                        onChanged: (value) {
+                          passwordkey.currentState!.validate();
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Field is empty please enter your password";
+                          } else if (value.length < 4) {
+                            return "Password should be at least 4 characters long";
+                          } else {
+                            return null;
+                          }
+                        },
                         controller: passwordController,
                         style: const TextStyle(color: Colors.white),
                         obscureText: passwordHidden,
@@ -154,26 +182,28 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(padding: EdgeInsets.only(top: 30.sp)),
                     GradientButton(
                         onButtonPressed: () {
-                          BlocProvider.of<AuthenticationBloc>(context).add(
-                              LoginEvent(usernameController.text,
-                                  passwordController.text));
+                          if (formkey.currentState!.validate()) {
+                            BlocProvider.of<AuthenticationBloc>(context).add(
+                                LoginEvent(usernameController.text,
+                                    passwordController.text));
+                          }
                         },
                         buttonText: "Login"),
-                    BlocConsumer<AuthenticationBloc, AuthenticationState>(
-                      builder: (context, state) {
-                        if (state is LoginErrorState) {
-                          return const DefaultText.bold(
-                              text: 'Login Failed', fontSize: 16);
-                        } else {
-                          return const SizedBox.shrink();
+                    BlocListener<AuthenticationBloc, AuthenticationState>(
+                      listener: (context, state) {
+                        if (state is LoginSuccessState) {
+                          Navigator.pushNamed(context, pages.homePage);
+                          EasyLoading.showSuccess('Login Success',
+                              duration: const Duration(milliseconds: 700));
+                        } else if (state is LoginLoadingState) {
+                          EasyLoading.show(status: "Logging in...");
+                        } else if (state is LoginErrorState) {
+                          EasyLoading.showError(' Login Error ',
+                              duration: const Duration(milliseconds: 700));
                         }
                       },
-                      listenWhen: (previous, current) =>
-                          current is LoginSuccessState,
-                      listener: (context, state) {
-                        Navigator.pushNamed(context, pages.homePage);
-                      },
-                    ),
+                      child: Container(),
+                    )
                   ],
                 ))
           ],

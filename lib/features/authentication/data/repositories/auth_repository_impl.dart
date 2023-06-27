@@ -60,10 +60,19 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
   @override
   Future<Either<Failure, Unit>> logoutUser() async {
     if (await networkInfo.isConnected) {
+      try {
+        final id = await localDataSource.getSessionId();
+        localDataSource.deleteSessionId();
+        final response = await remoteDataSource.deleteSession(id);
+        return const Right(unit);
+      } on InvalidCredentialsException {
+        return Left(InvalidCredentialsFailure());
+      } on ServerException {
+        return Left(ServerFailure());
+      }
     } else {
       return Left(NetworkFailure());
     }
-    throw UnimplementedError();
   }
 
   @override

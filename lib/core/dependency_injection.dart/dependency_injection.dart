@@ -7,6 +7,7 @@ import 'package:movies_app/features/authentication/data/repositories/auth_reposi
 import 'package:movies_app/features/authentication/domain/repositories/auth_repository.dart';
 import 'package:movies_app/features/authentication/domain/usecases/guest_login_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/login_usecase.dart';
+import 'package:movies_app/features/authentication/domain/usecases/logout_usecase.dart';
 import 'package:movies_app/features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -16,11 +17,12 @@ final sl = GetIt.instance;
 // feature - Authentication
 Future<void> init() async {
   // bloc
-  sl.registerFactory(
-      () => AuthenticationBloc(loginUseCase: sl(), guestLoginUseCase: sl()));
+  sl.registerFactory(() => AuthenticationBloc(
+      loginUseCase: sl(), guestLoginUseCase: sl(), logoutUseCase: sl()));
   // UseCases
   sl.registerLazySingleton(() => LoginUseCase(sl()));
   sl.registerLazySingleton(() => GuestLoginUseCase(sl()));
+  sl.registerLazySingleton(() => LogoutUseCase(sl()));
   // repositories
   sl.registerLazySingleton<AuthenticationRepo>(
       () => AuthenticationRepoImpl(sl(), sl(), sl()));

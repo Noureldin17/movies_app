@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:dartz/dartz.dart';
+import 'package:http/http.dart';
 import 'package:movies_app/core/api/tmdb_api_constants.dart';
 import 'package:movies_app/core/error/exceptions.dart';
 import '../../domain/models/request_token_model.dart';
@@ -9,6 +11,7 @@ abstract class AuthenticationRemoteDataSource {
   Future<RequestTokenModel> validateWithLogin(Map<String, dynamic> body);
   Future<String> createSession(Map<String, dynamic> body);
   Future<String> createGuestSession();
+  Future<Unit> deleteSession(String sessionId);
 }
 
 class AuthenticationRemoteImplWithHttp
@@ -23,7 +26,6 @@ class AuthenticationRemoteImplWithHttp
         Uri.parse(
             "${TMDBApiConstants.BASE_URL}authentication/token/new?api_key=${TMDBApiConstants.API_KEY}"),
         headers: {"Content-Type": 'application/json'});
-    print(response.body);
     if (response.statusCode == 200) {
       return RequestTokenModel.fromJson(json.decode(response.body));
     } else {
@@ -38,7 +40,6 @@ class AuthenticationRemoteImplWithHttp
             "${TMDBApiConstants.BASE_URL}authentication/token/validate_with_login?api_key=${TMDBApiConstants.API_KEY}"),
         headers: {"Content-Type": 'application/json'},
         body: json.encode(body));
-    print(response.body);
     if (response.statusCode == 200) {
       return RequestTokenModel.fromJson(json.decode(response.body));
     } else if (response.statusCode == 401) {
@@ -56,7 +57,6 @@ class AuthenticationRemoteImplWithHttp
         headers: {"Content-Type": 'application/json'},
         body: json.encode(body));
 
-    print(response.body);
     if (response.statusCode == 200) {
       return json.decode(response.body)['success'] == true
           ? json.decode(response.body)['session_id']
@@ -80,6 +80,24 @@ class AuthenticationRemoteImplWithHttp
       return json.decode(response.body)['success'] == true
           ? json.decode(response.body)['guest_session_id']
           : null;
+    } else if (response.statusCode == 401) {
+      throw InvalidCredentialsException();
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<Unit> deleteSession(String sessionId) async {
+    final response = await client.delete(
+        Uri.parse(
+            '${TMDBApiConstants.BASE_URL}authentication/session?api_key=${TMDBApiConstants.API_KEY}'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'session_id': sessionId}));
+
+    print(response.body);
+    if (response.statusCode == 200) {
+      return unit;
     } else if (response.statusCode == 401) {
       throw InvalidCredentialsException();
     } else {

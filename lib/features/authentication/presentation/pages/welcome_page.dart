@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:flutter_loadingindicator/flutter_loadingindicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movies_app/features/authentication/presentation/widgets/custom_outline.dart';
 import 'package:movies_app/features/authentication/presentation/widgets/gradient_button.dart';
@@ -117,10 +118,17 @@ class WelcomePage extends StatelessWidget {
             ),
             Padding(padding: EdgeInsets.only(top: 20.sp)),
             BlocListener<AuthenticationBloc, AuthenticationState>(
-              listenWhen: (previous, current) =>
-                  current is GuestLoginSuccessState,
               listener: (context, state) {
-                Navigator.pushReplacementNamed(context, pages.homePage);
+                if (state is GuestLoginSuccessState) {
+                  Navigator.pushReplacementNamed(context, pages.homePage);
+                  EasyLoading.showSuccess('Login Success',
+                      duration: const Duration(milliseconds: 700));
+                } else if (state is LoginLoadingState) {
+                  EasyLoading.show(status: "Logging in...");
+                } else if (state is GuestLoginErrorState) {
+                  EasyLoading.showError(' Login Error ',
+                      duration: const Duration(milliseconds: 700));
+                }
               },
               child: Container(),
             )
