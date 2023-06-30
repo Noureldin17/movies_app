@@ -5,11 +5,12 @@ import 'package:flutter_loadingindicator/flutter_loadingindicator.dart';
 import 'package:movies_app/config/router.dart';
 import 'package:movies_app/features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:movies_app/features/authentication/presentation/pages/onboarding.dart';
+// ignore: depend_on_referenced_packages
 import 'package:page_transition/page_transition.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import './utils/colors.dart' as colors;
-import 'core/dependency_injection.dart/dependency_injection.dart' as di;
+import 'core/dependency_injection/dependency_injection.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,11 +25,12 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => di.sl<AuthenticationBloc>(),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        title: 'MovieMagic',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        home: const MyHomePage(title: 'MovieMagic'),
         builder: EasyLoading.init(),
       ),
     );

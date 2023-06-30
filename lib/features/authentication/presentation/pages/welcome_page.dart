@@ -120,7 +120,7 @@ class WelcomePage extends StatelessWidget {
             BlocListener<AuthenticationBloc, AuthenticationState>(
               listener: (context, state) {
                 if (state is GuestLoginSuccessState) {
-                  Navigator.pushReplacementNamed(context, pages.homePage);
+                  Navigator.pushReplacementNamed(context, pages.appMainPage);
                   EasyLoading.showSuccess('Login Success',
                       duration: const Duration(milliseconds: 700));
                 } else if (state is LoginLoadingState) {

@@ -192,7 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                     BlocListener<AuthenticationBloc, AuthenticationState>(
                       listener: (context, state) {
                         if (state is LoginSuccessState) {
-                          Navigator.pushNamed(context, pages.homePage);
+                          Navigator.pushNamed(context, pages.appMainPage);
                           EasyLoading.showSuccess('Login Success',
                               duration: const Duration(milliseconds: 700));
                         } else if (state is LoginLoadingState) {

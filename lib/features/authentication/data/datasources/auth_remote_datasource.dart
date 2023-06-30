@@ -40,6 +40,7 @@ class AuthenticationRemoteImplWithHttp
             "${TMDBApiConstants.BASE_URL}authentication/token/validate_with_login?api_key=${TMDBApiConstants.API_KEY}"),
         headers: {"Content-Type": 'application/json'},
         body: json.encode(body));
+
     if (response.statusCode == 200) {
       return RequestTokenModel.fromJson(json.decode(response.body));
     } else if (response.statusCode == 401) {
@@ -56,7 +57,7 @@ class AuthenticationRemoteImplWithHttp
             "${TMDBApiConstants.BASE_URL}authentication/session/new?api_key=${TMDBApiConstants.API_KEY}"),
         headers: {"Content-Type": 'application/json'},
         body: json.encode(body));
-
+    print(response.body);
     if (response.statusCode == 200) {
       return json.decode(response.body)['success'] == true
           ? json.decode(response.body)['session_id']
