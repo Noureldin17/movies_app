@@ -92,6 +92,8 @@ class WelcomePage extends StatelessWidget {
                   Navigator.pushNamed(context, pages.loginPage);
                 }),
                 style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.sp)),
                     elevation: 4.sp,
                     shadowColor: Colors.transparent,
                     fixedSize: Size(90.w, 35.sp),

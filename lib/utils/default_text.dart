@@ -24,6 +24,7 @@ class DefaultText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      maxLines: 5,
       style: GoogleFonts.roboto(
         color: Colors.white,
         fontSize: fontSize.sp,

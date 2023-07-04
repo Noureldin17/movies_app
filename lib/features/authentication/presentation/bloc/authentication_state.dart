@@ -37,3 +37,9 @@ class GuestLoginErrorState extends AuthenticationState {
 
   const GuestLoginErrorState(this.message);
 }
+
+class OnBoardCheckedState extends AuthenticationState {
+  final bool isOnBoard;
+
+  const OnBoardCheckedState(this.isOnBoard);
+}

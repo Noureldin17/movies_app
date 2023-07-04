@@ -5,11 +5,13 @@ import 'package:flutter_loadingindicator/flutter_loadingindicator.dart';
 import 'package:movies_app/config/router.dart';
 import 'package:movies_app/features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:movies_app/features/authentication/presentation/pages/onboarding.dart';
+import 'package:movies_app/features/authentication/presentation/pages/welcome_page.dart';
 // ignore: depend_on_referenced_packages
 import 'package:page_transition/page_transition.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import './utils/colors.dart' as colors;
+import './utils/pages.dart' as pages;
 import 'core/dependency_injection/dependency_injection.dart' as di;
 
 void main() async {
@@ -47,6 +49,27 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   AppRouter router = AppRouter();
   @override
+  void initState() {
+    BlocProvider.of<AuthenticationBloc>(context).add(CheckOnBoardEvent());
+    super.initState();
+  }
+
+  String getNextRoute() {
+    String nextRoute = pages.onBoardingPage;
+    AuthenticationState state =
+        BlocProvider.of<AuthenticationBloc>(context).state;
+    if (state is OnBoardCheckedState) {
+      OnBoardCheckedState onBoardCheckedState = state;
+      if (onBoardCheckedState.isOnBoard) {
+        nextRoute = pages.welcomePage;
+      }
+    } else {
+      nextRoute = pages.onBoardingPage;
+    }
+    return nextRoute;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -59,7 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
             pageTransitionType: PageTransitionType.fade,
             backgroundColor: colors.primaryDark,
             splash: splashScreen(),
-            nextScreen: const OnBoardingPage()),
+            nextRoute: getNextRoute(),
+            nextScreen: Container()),
       ),
     );
   }

@@ -63,6 +63,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       try {
         final id = await localDataSource.getSessionId();
         localDataSource.deleteSessionId();
+        // ignore: unused_local_variable
         final response = await remoteDataSource.deleteSession(id);
         return const Right(unit);
       } on InvalidCredentialsException {
@@ -81,7 +82,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       try {
         final sessionId = await remoteDataSource.createGuestSession();
         if (sessionId != null) {
-          localDataSource.saveSessionId(sessionId);
+          // localDataSource.saveSessionId(sessionId);
           return const Right(unit);
         } else {
           return Left(InvalidCredentialsFailure());
@@ -93,6 +94,22 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       }
     } else {
       return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> checkOnBoardUser() async {
+    final value = await localDataSource.checkOnBoardUser();
+    return Right(value);
+  }
+
+  @override
+  Future<Either<Failure, Unit>> onBoardUser() async {
+    try {
+      await localDataSource.onBoardUser();
+      return const Right(unit);
+    } catch (_) {
+      return Left(CacheFailure());
     }
   }
 }

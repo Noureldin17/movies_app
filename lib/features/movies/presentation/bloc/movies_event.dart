@@ -13,9 +13,17 @@ class GetMoviesEvent extends MoviesEvent {
   const GetMoviesEvent(this.type);
 }
 
-// class GetTopRatedMoviesEvent extends MoviesEvent {}
+class GetTopRatedMoviesEvent extends MoviesEvent {
+  final String type;
 
-// class GetUpcomingMoviesEvent extends MoviesEvent {}
+  const GetTopRatedMoviesEvent(this.type);
+}
+
+class GetUpcomingMoviesEvent extends MoviesEvent {
+  final String type;
+
+  const GetUpcomingMoviesEvent(this.type);
+}
 
 class GetTrailerMoviesEvent extends MoviesEvent {}
 

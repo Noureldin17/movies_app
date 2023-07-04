@@ -12,4 +12,6 @@ class TMDBApiConstants {
   static const UPCOMING_MOVIES_ENDPOINT = "movie/upcoming";
   // ignore: constant_identifier_names
   static const TOPRATED_MOVIES_ENDPOINT = "movie/top_rated";
+  // ignore: constant_identifier_names
+  // static const TRENDING_MOVIES_ENDPOINT = "trending/movie/day";
 }

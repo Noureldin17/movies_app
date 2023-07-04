@@ -5,9 +5,11 @@ import 'package:movies_app/features/authentication/data/datasources/auth_local_d
 import 'package:movies_app/features/authentication/data/datasources/auth_remote_datasource.dart';
 import 'package:movies_app/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:movies_app/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:movies_app/features/authentication/domain/usecases/check_onboard_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/guest_login_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/login_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/logout_usecase.dart';
+import 'package:movies_app/features/authentication/domain/usecases/onboard_usecase.dart';
 import 'package:movies_app/features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:movies_app/features/movies/data/datasources/movies_local_datasource.dart';
 import 'package:movies_app/features/movies/data/datasources/movies_remote_datasource.dart';
@@ -15,9 +17,7 @@ import 'package:movies_app/features/movies/data/repositories/movies_repository_i
 import 'package:movies_app/features/movies/domain/repositories/movies_repository.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_credits_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_movies_usecase.dart';
-import 'package:movies_app/features/movies/domain/usecases/get_top_rated_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_trailer_usecase.dart';
-import 'package:movies_app/features/movies/domain/usecases/get_upcoming_usecase.dart';
 import 'package:movies_app/features/movies/presentation/bloc/movies_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -28,23 +28,28 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // bloc
   sl.registerFactory(() => AuthenticationBloc(
-      loginUseCase: sl(), guestLoginUseCase: sl(), logoutUseCase: sl()));
+      loginUseCase: sl(),
+      guestLoginUseCase: sl(),
+      logoutUseCase: sl(),
+      checkOnBoardUseCase: sl(),
+      onBoardUseCase: sl()));
   sl.registerFactory(() => MoviesBloc(
-      getCreditsUseCase: sl(),
-      getMoviesUseCase: sl(),
-      getTopRatedMoviesUseCase: sl(),
-      getTrailerUseCase: sl(),
-      getUpcomingMoviesUseCase: sl()));
+        getCreditsUseCase: sl(),
+        getMoviesUseCase: sl(),
+        getTrailerUseCase: sl(),
+      ));
   // UseCases
   sl.registerLazySingleton(() => LoginUseCase(sl()));
   sl.registerLazySingleton(() => GuestLoginUseCase(sl()));
   sl.registerLazySingleton(() => LogoutUseCase(sl()));
+  sl.registerLazySingleton(() => CheckOnBoardUseCase(sl()));
+  sl.registerLazySingleton(() => OnBoardUseCase(sl()));
 
   sl.registerLazySingleton(() => GetCreditsUseCase(sl()));
   sl.registerLazySingleton(() => GetTrailerUseCase(sl()));
   sl.registerLazySingleton(() => GetMoviesUseCase(sl()));
-  sl.registerLazySingleton(() => GetTopRatedMoviesUseCase(sl()));
-  sl.registerLazySingleton(() => GetUpcomingMoviesUseCase(sl()));
+  // sl.registerLazySingleton(() => GetTopRatedMoviesUseCase(sl()));
+  // sl.registerLazySingleton(() => GetUpcomingMoviesUseCase(sl()));
   // repositories
   sl.registerLazySingleton<AuthenticationRepo>(
       () => AuthenticationRepoImpl(sl(), sl(), sl()));

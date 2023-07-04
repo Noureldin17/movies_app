@@ -1,12 +1,14 @@
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:http/http.dart';
+// import 'package:http/http.dart';
 import 'package:movies_app/core/error/failures.dart';
 import 'package:movies_app/features/authentication/domain/models/login_request_params.dart';
+import 'package:movies_app/features/authentication/domain/usecases/check_onboard_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/guest_login_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/login_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/logout_usecase.dart';
+import 'package:movies_app/features/authentication/domain/usecases/onboard_usecase.dart';
 
 part 'authentication_event.dart';
 part 'authentication_state.dart';
@@ -16,9 +18,13 @@ class AuthenticationBloc
   final LoginUseCase loginUseCase;
   final GuestLoginUseCase guestLoginUseCase;
   final LogoutUseCase logoutUseCase;
+  final OnBoardUseCase onBoardUseCase;
+  final CheckOnBoardUseCase checkOnBoardUseCase;
   AuthenticationBloc(
       {required this.loginUseCase,
       required this.guestLoginUseCase,
+      required this.checkOnBoardUseCase,
+      required this.onBoardUseCase,
       required this.logoutUseCase})
       : super(AuthenticationInitial()) {
     on<AuthenticationEvent>((event, emit) async {
@@ -43,6 +49,14 @@ class AuthenticationBloc
         final response = await logoutUseCase.call();
         response.fold((l) => emit(LogoutErrorState(_mapErrorToMessage(l))),
             (r) => emit(LogoutSuccessState()));
+      } else if (event is OnBoardEvent) {
+        final response = await onBoardUseCase.call();
+        response.fold((l) => print("FAILED"), (r) => print("SUCCESS"));
+      } else if (event is CheckOnBoardEvent) {
+        final response = await checkOnBoardUseCase.call();
+        response.fold((l) => print(l), (r) {
+          emit(OnBoardCheckedState(r));
+        });
       }
     });
   }

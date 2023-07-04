@@ -32,7 +32,7 @@ class MoviesRemoteImplWithHttp implements MoviesRemoteDatasource {
           decodedJson.map((json) => Member.fromJson(json)).toList();
       actorList
           .retainWhere((element) => element.knownForDepartment == 'Acting');
-      print(actorList);
+      // print(actorList);
       return actorList;
     } else {
       throw ServerException();
@@ -62,7 +62,7 @@ class MoviesRemoteImplWithHttp implements MoviesRemoteDatasource {
         Uri.parse(
             "${TMDBApiConstants.BASE_URL}$endpoint?api_key=${TMDBApiConstants.API_KEY}&page=$page"),
         headers: {"Content-Type": "application/json"});
-    print(response.body);
+    // print(response.body);
     if (response.statusCode == 200) {
       List decodedJson = json.decode(response.body)["results"];
       List<Movie> movieList =

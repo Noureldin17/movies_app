@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/features/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:movies_app/utils/default_text.dart';
 
 import '../../../../utils/pages.dart' as pages;
@@ -115,6 +117,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                         child: ElevatedButton(
                             onPressed: (() {
                               if (lastPage) {
+                                BlocProvider.of<AuthenticationBloc>(context)
+                                    .add(OnBoardEvent());
                                 Navigator.pushReplacementNamed(
                                     context, pages.welcomePage);
                               } else {
@@ -124,7 +128,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                               }
                             }),
                             style: ElevatedButton.styleFrom(
-                              fixedSize: Size(120.sp, 20.sp),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.sp)),
+                              fixedSize: Size(120.sp, 35.sp),
                               shadowColor: Colors.transparent,
                               backgroundColor: Colors.transparent,
                             ),

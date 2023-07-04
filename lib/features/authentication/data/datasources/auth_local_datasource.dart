@@ -4,6 +4,8 @@ abstract class AuthenticationLocalDataSource {
   Future<void> saveSessionId(String sessionId);
   Future<void> deleteSessionId();
   Future<String> getSessionId();
+  Future<void> onBoardUser();
+  Future<bool> checkOnBoardUser();
 }
 
 class AuthenticationLocalImpl implements AuthenticationLocalDataSource {
@@ -23,8 +25,24 @@ class AuthenticationLocalImpl implements AuthenticationLocalDataSource {
 
   @override
   Future<String> getSessionId() async {
-    final value = await sharedPreferences.getString('session_id');
-    print(value.toString());
+    final value = sharedPreferences.getString('session_id');
     return value.toString();
+  }
+
+  @override
+  Future<bool> checkOnBoardUser() async {
+    final value = sharedPreferences.getBool('onboard_user');
+    if (value == null) {
+      return false;
+    } else if (value == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  Future<void> onBoardUser() async {
+    await sharedPreferences.setBool('onboard_user', true);
   }
 }

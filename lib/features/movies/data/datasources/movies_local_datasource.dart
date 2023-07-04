@@ -24,7 +24,7 @@ class MoviesLocalImpl implements MoviesLocalDatasource {
       list.add(moviesList);
       sharedPreferences.setString("${type}_Cached_Movies", jsonEncode(list));
       return Future.value(unit);
-    } on EmptyCacheException {
+    } catch (e) {
       List moviesList =
           movies.map<Map<String, dynamic>>((movie) => movie.toJson()).toList();
       sharedPreferences.setString(

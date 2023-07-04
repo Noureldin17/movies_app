@@ -7,7 +7,16 @@ class GetMoviesUseCase {
   final MoviesRepository moviesRepository;
 
   GetMoviesUseCase(this.moviesRepository);
-  Future<Either<Failure, List<Movie>>> call(int page) async {
-    return await moviesRepository.getMovies(page);
+  Future<Either<Failure, List<Movie>>> call(int page, String type) async {
+    switch (type) {
+      case 'Discover':
+        return await moviesRepository.getMovies(page);
+      case 'Top Rated':
+        return await moviesRepository.getTopRatedMovies(page);
+      case 'Upcoming':
+        return await moviesRepository.getUpcomingMovies(page);
+      default:
+        return await moviesRepository.getMovies(page);
+    }
   }
 }

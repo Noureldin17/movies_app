@@ -19,3 +19,7 @@ class LoginEvent extends AuthenticationEvent {
 class GuestLoginEvent extends AuthenticationEvent {}
 
 class LogoutEvent extends AuthenticationEvent {}
+
+class OnBoardEvent extends AuthenticationEvent {}
+
+class CheckOnBoardEvent extends AuthenticationEvent {}

@@ -51,7 +51,7 @@ class MoviesRepoImpl implements MoviesRepository {
       try {
         final response = await remoteDatasource.getMovies(
             page, TMDBApiConstants.DISCOVER_MOVIES_ENDPOINT);
-        localDatasource.cacheMovies(response, "Discover");
+        // localDatasource.cacheMovies(response, "Discover");
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());
@@ -72,7 +72,7 @@ class MoviesRepoImpl implements MoviesRepository {
       try {
         final response = await remoteDatasource.getMovies(
             page, TMDBApiConstants.TOPRATED_MOVIES_ENDPOINT);
-        localDatasource.cacheMovies(response, "TopRated");
+        // localDatasource.cacheMovies(response, "TopRated");
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());
@@ -93,7 +93,7 @@ class MoviesRepoImpl implements MoviesRepository {
       try {
         final response = await remoteDatasource.getMovies(
             page, TMDBApiConstants.UPCOMING_MOVIES_ENDPOINT);
-        localDatasource.cacheMovies(response, "UpComing");
+        // localDatasource.cacheMovies(response, "UpComing");
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());

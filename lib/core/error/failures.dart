@@ -26,6 +26,14 @@ class EmptyCacheFailure implements Failure {
   bool? get stringify => false;
 }
 
+class CacheFailure implements Failure {
+  @override
+  List<Object?> get props => [];
+
+  @override
+  bool? get stringify => false;
+}
+
 class InvalidCredentialsFailure implements Failure {
   @override
   List<Object?> get props => [];
