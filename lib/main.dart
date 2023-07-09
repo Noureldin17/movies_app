@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_loadingindicator/flutter_loadingindicator.dart';
 import 'package:movies_app/config/router.dart';
 import 'package:movies_app/features/authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:movies_app/features/authentication/presentation/pages/onboarding.dart';
-import 'package:movies_app/features/authentication/presentation/pages/welcome_page.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:page_transition/page_transition.dart';
 import 'package:google_fonts/google_fonts.dart';

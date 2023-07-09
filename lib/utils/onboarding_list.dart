@@ -10,32 +10,27 @@ List<Widget> onBoardingList = [
         children: [
           Image.asset(
             'assets/posters/shelby2.jpg',
-            fit: BoxFit.contain,
             color: colors.primaryDark.withOpacity(0.3),
             colorBlendMode: BlendMode.darken,
           ),
-          Column(
-            children: [
-              Container(
-                width: 100.w,
-                height: 90.h,
-                decoration: const BoxDecoration(
-                    color: colors.primaryDark,
-                    gradient: LinearGradient(
-                        stops: [
-                          0.1,
-                          0.4,
-                          0.6,
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Color.fromARGB(153, 8, 8, 29),
-                          colors.primaryDark
-                        ])),
-              ),
-            ],
+          Container(
+            width: 100.w,
+            height: 90.h,
+            decoration: const BoxDecoration(
+                color: colors.primaryDark,
+                gradient: LinearGradient(
+                    stops: [
+                      0.1,
+                      0.4,
+                      0.6,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Color.fromARGB(153, 8, 8, 29),
+                      colors.primaryDark
+                    ])),
           ),
           Padding(
             padding: EdgeInsets.only(top: 380.sp),
@@ -50,8 +45,7 @@ List<Widget> onBoardingList = [
                   ),
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 25.sp, vertical: 20.sp),
+                  padding: EdgeInsets.fromLTRB(25.sp, 20.sp, 25.sp, 0.sp),
                   child: Text(
                     "Get information about movies & Tv shows, cast, and crew",
                     textAlign: TextAlign.center,
@@ -76,30 +70,29 @@ List<Widget> onBoardingList = [
           Image.asset(
             'assets/posters/wick.jpg',
             color: colors.primaryDark.withOpacity(0.4),
+            fit: BoxFit.scaleDown,
             colorBlendMode: BlendMode.darken,
+            width: 100.w,
+            height: 90.h,
           ),
-          Column(
-            children: [
-              Container(
-                width: 100.w,
-                height: 90.h,
-                decoration: const BoxDecoration(
-                    color: colors.primaryDark,
-                    gradient: LinearGradient(
-                        stops: [
-                          0.1,
-                          0.4,
-                          0.6,
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Color.fromARGB(153, 8, 8, 29),
-                          colors.primaryDark
-                        ])),
-              ),
-            ],
+          Container(
+            width: 100.w,
+            height: 90.h,
+            decoration: const BoxDecoration(
+                color: colors.primaryDark,
+                gradient: LinearGradient(
+                    stops: [
+                      0.1,
+                      0.4,
+                      0.6,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Color.fromARGB(153, 8, 8, 29),
+                      colors.primaryDark
+                    ])),
           ),
           Padding(
             padding: EdgeInsets.only(top: 380.sp),
@@ -114,8 +107,7 @@ List<Widget> onBoardingList = [
                   ),
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 25.sp, vertical: 20.sp),
+                  padding: EdgeInsets.fromLTRB(25.sp, 20.sp, 25.sp, 0.sp),
                   child: Text(
                     "Browse the latest movies available and watch their trailers",
                     textAlign: TextAlign.center,
@@ -140,30 +132,29 @@ List<Widget> onBoardingList = [
           Image.asset(
             'assets/posters/leo2.jpg',
             color: colors.primaryDark.withOpacity(0.4),
+            fit: BoxFit.scaleDown,
             colorBlendMode: BlendMode.darken,
+            width: 100.w,
+            height: 90.h,
           ),
-          Column(
-            children: [
-              Container(
-                width: 100.w,
-                height: 90.h,
-                decoration: const BoxDecoration(
-                    color: colors.primaryDark,
-                    gradient: LinearGradient(
-                        stops: [
-                          0.1,
-                          0.4,
-                          0.6,
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.transparent,
-                          Color.fromARGB(153, 8, 8, 29),
-                          colors.primaryDark
-                        ])),
-              ),
-            ],
+          Container(
+            width: 100.w,
+            height: 90.h,
+            decoration: const BoxDecoration(
+                color: colors.primaryDark,
+                gradient: LinearGradient(
+                    stops: [
+                      0.1,
+                      0.4,
+                      0.6,
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Color.fromARGB(153, 8, 8, 29),
+                      colors.primaryDark
+                    ])),
           ),
           Padding(
             padding: EdgeInsets.only(top: 380.sp),
@@ -178,8 +169,7 @@ List<Widget> onBoardingList = [
                   ),
                 ),
                 Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 25.sp, vertical: 20.sp),
+                  padding: EdgeInsets.fromLTRB(25.sp, 20.sp, 25.sp, 0.sp),
                   child: Text(
                     "Movie & TV information and updates movie trailer",
                     textAlign: TextAlign.center,

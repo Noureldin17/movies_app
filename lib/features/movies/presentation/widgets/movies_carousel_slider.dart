@@ -64,8 +64,8 @@ class _MoviesCarouselSliderState extends State<MoviesCarouselSlider>
                 items: [
                   ...widget.movieList.map((movie) => CarouselSliderImage(
                       onClick: () {
-                        final movieDetailArgs =
-                            MovieDetailArgs('Discover', movie);
+                        final movieDetailArgs = MovieDetailArgs(
+                            '${movie.posterPath}Discover', movie);
                         widget.onMovieClick(movieDetailArgs);
                       },
                       posterPath: movie.posterPath))

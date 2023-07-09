@@ -15,7 +15,7 @@ class Member {
     knownForDepartment = json['known_for_department'];
     name = json['name'];
     originalName = json['original_name'];
-    profilePath = json['profile_path'];
+    profilePath = json['profile_path'] ?? ' ';
     character = json['character'];
   }
 

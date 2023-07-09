@@ -54,8 +54,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               ),
             ),
             Padding(
-              padding:
-                  EdgeInsets.only(left: 30.sp, right: 30.sp, bottom: 18.sp),
+              padding: EdgeInsets.only(left: 30.sp, right: 30.sp, bottom: 0.sp),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

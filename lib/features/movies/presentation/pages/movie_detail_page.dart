@@ -1,17 +1,16 @@
-import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:movies_app/features/movies/presentation/bloc/movies_bloc.dart';
 import 'package:movies_app/features/movies/presentation/widgets/backdrop_image.dart';
+import 'package:movies_app/features/movies/presentation/widgets/movie_casts_view.dart';
+import 'package:movies_app/features/movies/presentation/widgets/movie_info.dart';
 import 'package:movies_app/utils/default_text.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../core/api/tmdb_api_constants.dart';
 import '../../../../utils/colors.dart' as colors;
 import '../../domain/models/movie_detail_args_model.dart';
-import '../../domain/models/movie_model.dart';
 
 class MovieDetailPage extends StatefulWidget {
   const MovieDetailPage({super.key, required this.movieDetailArgs});
@@ -21,8 +20,15 @@ class MovieDetailPage extends StatefulWidget {
 }
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
-  // static final customCacheManager = CacheManager(Config('customKey',
-  //     stalePeriod: const Duration(hours: 5), maxNrOfCacheObjects: 100));
+  @override
+  void initState() {
+    BlocProvider.of<MoviesBloc>(context)
+        .add(GetDetailsEvent(widget.movieDetailArgs.movie.movieId));
+    BlocProvider.of<MoviesBloc>(context)
+        .add(GetCreditsEvent(widget.movieDetailArgs.movie.movieId));
+    super.initState();
+  }
+
   static final customCacheManager2 = CacheManager(Config('customPosterKey',
       stalePeriod: const Duration(hours: 5), maxNrOfCacheObjects: 100));
   @override
@@ -73,6 +79,42 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                 ),
               ),
             ],
+          ),
+          BlocBuilder<MoviesBloc, MoviesState>(
+            buildWhen: (previous, current) =>
+                current is DetailsSuccess ||
+                current is DetailsError ||
+                current is DetailsLoading,
+            builder: (context, state) {
+              if (state is DetailsSuccess) {
+                return MovieInfo(
+                  movieDetails: state.movieDetails,
+                  movie: widget.movieDetailArgs.movie,
+                );
+              } else {
+                return Text('data');
+              }
+            },
+          ),
+          BlocBuilder<MoviesBloc, MoviesState>(
+            buildWhen: (previous, current) =>
+                current is CreditsSuccess ||
+                current is CreditsLoading ||
+                current is CreditsError,
+            builder: (context, state) {
+              if (state is CreditsSuccess) {
+                return MovieCastsView(
+                  cast: state.castsList,
+                );
+              } else if (state is CreditsError) {
+                return Text(
+                  state.message,
+                  style: TextStyle(color: Colors.white),
+                );
+              } else {
+                return Text('data');
+              }
+            },
           ),
         ]),
       ),

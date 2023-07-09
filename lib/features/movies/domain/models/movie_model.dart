@@ -10,14 +10,14 @@ class Movie {
 
   Movie.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
-    backdropPath = json['backdrop_path'];
+    backdropPath = json['backdrop_path'] ?? ' ';
     genreIds = json['genre_ids'].cast<int>();
     movieId = json['id'];
-    posterPath = json['poster_path'];
-    releaseDate = json['release_date'];
-    movieTitle = json['title'];
+    posterPath = json['poster_path'] ?? ' ';
+    releaseDate = json['release_date'] ?? ' ';
+    // movieTitle = json['title'];
     overview = json['overview'];
-    // movieTitle = json['original_title'];
+    movieTitle = json['original_title'];
   }
 
   Map<String, dynamic> toJson() {

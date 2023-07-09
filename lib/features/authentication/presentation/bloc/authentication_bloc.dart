@@ -50,11 +50,11 @@ class AuthenticationBloc
         response.fold((l) => emit(LogoutErrorState(_mapErrorToMessage(l))),
             (r) => emit(LogoutSuccessState()));
       } else if (event is OnBoardEvent) {
+        // ignore: unused_local_variable
         final response = await onBoardUseCase.call();
-        response.fold((l) => print("FAILED"), (r) => print("SUCCESS"));
       } else if (event is CheckOnBoardEvent) {
         final response = await checkOnBoardUseCase.call();
-        response.fold((l) => print(l), (r) {
+        response.fold((l) => null, (r) {
           emit(OnBoardCheckedState(r));
         });
       }

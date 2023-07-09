@@ -24,6 +24,7 @@ class _BackdropImageState extends State<BackdropImage> {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
+      // useOldImageOnUrlChange: true,
       cacheManager: customCacheManager,
       fadeInDuration: const Duration(milliseconds: 300),
       fadeInCurve: Curves.easeIn,
@@ -76,31 +77,31 @@ class _BackdropImageState extends State<BackdropImage> {
           )
         ],
       ),
-      // placeholder: (context, url) => Stack(
-      //   children: [
-      //     Container(
-      //       height: 220.sp,
-      //       width: 100.w,
-      //       decoration: BoxDecoration(
-      //         color: Colors.grey,
-      //         borderRadius: BorderRadius.only(
-      //           bottomLeft: Radius.circular(12.sp),
-      //           bottomRight: Radius.circular(12.sp),
-      //         ),
-      //       ),
-      //     ),
-      //     BackdropFilter(
-      //       filter: ImageFilter.blur(
-      //         sigmaX: 20,
-      //         sigmaY: 20,
-      //       ),
-      //       child: const SizedBox(
-      //           // height: 100.sp,
-      //           // width: 100.w,
-      //           ),
-      //     )
-      //   ],
-      // ),
+      placeholder: (context, url) => Stack(
+        children: [
+          Container(
+            height: 220.sp,
+            width: 100.w,
+            decoration: BoxDecoration(
+              color: colors.primaryDark,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(12.sp),
+                bottomRight: Radius.circular(12.sp),
+              ),
+            ),
+          ),
+          BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 20,
+              sigmaY: 20,
+            ),
+            child: SizedBox(
+              height: 230.sp,
+              width: 100.w,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

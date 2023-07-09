@@ -1,3 +1,4 @@
+// ignore_for_file: unnecessary_null_comparison
 import 'package:movies_app/core/error/exceptions.dart';
 import 'package:movies_app/core/network/network_info.dart';
 import 'package:movies_app/features/authentication/data/datasources/auth_local_datasource.dart';

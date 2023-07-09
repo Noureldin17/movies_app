@@ -3,6 +3,7 @@ import 'package:movies_app/core/error/exceptions.dart';
 import 'package:movies_app/core/network/network_info.dart';
 import 'package:movies_app/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
+import 'package:movies_app/features/movies/domain/models/movies_details_model.dart';
 import '../../domain/models/movie_credits_model.dart';
 import '../../domain/models/movie_model.dart';
 import '../../domain/models/movie_videos_model.dart';
@@ -105,6 +106,41 @@ class MoviesRepoImpl implements MoviesRepository {
       } on EmptyCacheException {
         return Left(EmptyCacheFailure());
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Movie>>> getArabicMovies(int page) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final response = await remoteDatasource.getMovies(
+            page, TMDBApiConstants.ARABIC_MOVIES_ENDPOINT);
+        // localDatasource.cacheMovies(response, "UpComing");
+        return Right(response);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final response = await localDatasource.getCachedMovies("Arabic");
+        return Right(response);
+      } on EmptyCacheException {
+        return Left(EmptyCacheFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<Failure, MovieDetails>> getMovieDetails(int movieId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final response = await remoteDatasource.getMovieDetails(movieId);
+        return Right(response);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 }

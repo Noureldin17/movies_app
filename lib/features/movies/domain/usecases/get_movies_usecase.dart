@@ -15,6 +15,8 @@ class GetMoviesUseCase {
         return await moviesRepository.getTopRatedMovies(page);
       case 'Upcoming':
         return await moviesRepository.getUpcomingMovies(page);
+      case 'Arabic':
+        return await moviesRepository.getArabicMovies(page);
       default:
         return await moviesRepository.getMovies(page);
     }

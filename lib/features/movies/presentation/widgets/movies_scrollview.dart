@@ -81,6 +81,7 @@ class _MoviesScrollviewState extends State<MoviesScrollview> {
                           child: Hero(
                             tag: movie.posterPath + widget.moviesType,
                             child: CachedNetworkImage(
+                              // useOldImageOnUrlChange: true,
                               key: UniqueKey(),
                               cacheManager: customCacheManager,
                               imageUrl:
