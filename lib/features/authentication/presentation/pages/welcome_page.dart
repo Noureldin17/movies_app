@@ -34,7 +34,7 @@ class WelcomePage extends StatelessWidget {
                       width: 100.w,
                       height: 200.sp,
                       child: Image.asset(
-                        'assets/posters/welcome1.jpg',
+                        'assets/posters/meg.jpg',
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -59,7 +59,7 @@ class WelcomePage extends StatelessWidget {
                     width: 100.w,
                     height: 200.sp,
                     child: Image.asset(
-                      'assets/posters/welcome2.jpg',
+                      'assets/posters/jumanji.jpg',
                       fit: BoxFit.fill,
                     ),
                   ),

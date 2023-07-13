@@ -40,6 +40,8 @@ class MoviesRepoImpl implements MoviesRepository {
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());
+      } on EmptyResultException {
+        return Left(EmptyResultFailure());
       }
     } else {
       return Left(NetworkFailure());

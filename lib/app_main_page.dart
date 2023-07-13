@@ -23,7 +23,12 @@ class AppMainPage extends StatefulWidget {
 }
 
 class _AppMainPageState extends State<AppMainPage> {
-  final body = [const MoviesPage(), const TestPage(), const Test2Page()];
+  final body = [
+    const MoviesPage(),
+    const TestPage(),
+    const Test2Page(),
+    const Test2Page()
+  ];
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -69,6 +74,7 @@ class _AppMainPageState extends State<AppMainPage> {
         // ),
         backgroundColor: colors.primaryDark,
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           showSelectedLabels: false,
           showUnselectedLabels: false,
           selectedItemColor: Colors.white,
@@ -82,28 +88,62 @@ class _AppMainPageState extends State<AppMainPage> {
           },
           items: [
             BottomNavigationBarItem(
-                label: 'Home',
+                label: 'movies',
+                backgroundColor: colors.primaryDark,
                 icon: SvgPicture.asset(
-                  'assets/navbar_icons/home.svg',
+                  'assets/navbar_icons/video-vertical-outline.svg',
                   color: Colors.white,
                 ),
-                activeIcon: SvgPicture.asset(
-                    'assets/navbar_icons/homeactive.svg',
-                    color: Colors.white)),
+                activeIcon: ShaderMask(
+                    shaderCallback: (bounds) => const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [colors.primaryBlue, colors.primaryPurple])
+                        .createShader(bounds),
+                    child: SvgPicture.asset('assets/navbar_icons/video.svg',
+                        color: Colors.white))),
             BottomNavigationBarItem(
-                label: 'Home',
-                icon: SvgPicture.asset('assets/navbar_icons/home.svg',
+                label: 'search',
+                backgroundColor: colors.primaryDark,
+                icon: SvgPicture.asset('assets/navbar_icons/search.svg',
                     color: Colors.white),
-                activeIcon: SvgPicture.asset(
-                    'assets/navbar_icons/homeactive.svg',
-                    color: Colors.white)),
+                activeIcon: ShaderMask(
+                    shaderCallback: (bounds) => const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [colors.primaryBlue, colors.primaryPurple])
+                        .createShader(bounds),
+                    child: SvgPicture.asset(
+                        'assets/navbar_icons/search-active.svg',
+                        color: Colors.white))),
             BottomNavigationBarItem(
-                label: 'Home',
-                icon: SvgPicture.asset('assets/navbar_icons/home.svg',
+                label: 'watchlist',
+                backgroundColor: colors.primaryDark,
+                icon: SvgPicture.asset('assets/navbar_icons/archive-minus.svg',
                     color: Colors.white),
-                activeIcon: SvgPicture.asset(
-                    'assets/navbar_icons/homeactive.svg',
-                    color: Colors.white)),
+                activeIcon: ShaderMask(
+                    shaderCallback: (bounds) => const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [colors.primaryBlue, colors.primaryPurple])
+                        .createShader(bounds),
+                    child: SvgPicture.asset(
+                        'assets/navbar_icons/archive-minusactive.svg',
+                        color: Colors.white))),
+            BottomNavigationBarItem(
+                label: 'profile',
+                backgroundColor: colors.primaryDark,
+                icon: SvgPicture.asset('assets/navbar_icons/profile.svg',
+                    color: Colors.white),
+                activeIcon: ShaderMask(
+                    shaderCallback: (bounds) => const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [colors.primaryBlue, colors.primaryPurple])
+                        .createShader(bounds),
+                    child: SvgPicture.asset(
+                        'assets/navbar_icons/profileactive.svg',
+                        color: Colors.white))),
           ],
         ),
         body: LazyLoadIndexedStack(

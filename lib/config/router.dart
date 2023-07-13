@@ -53,6 +53,7 @@ class AppRouter {
                 movieDetailArgs: settings.arguments as MovieDetailArgs),
           ),
         );
+
       default:
         return null;
     }

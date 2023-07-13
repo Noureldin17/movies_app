@@ -1,5 +1,7 @@
 class ServerException implements Exception {}
 
+class EmptyResultException implements Exception {}
+
 class NetworkException implements Exception {}
 
 class EmptyCacheException implements Exception {}

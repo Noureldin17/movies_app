@@ -10,6 +10,7 @@ import 'package:movies_app/features/movies/domain/usecases/get_trailer_usecase.d
 import '../../../../core/error/failures.dart';
 import '../../domain/models/movie_credits_model.dart';
 import '../../domain/models/movie_model.dart';
+import '../../domain/models/movie_videos_model.dart';
 import '../../domain/models/movies_details_model.dart';
 
 part 'movies_event.dart';
@@ -44,8 +45,17 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         await _getDetailsHandler(event, emit);
       } else if (event is GetCreditsEvent) {
         await _getCreditsHandler(event, emit);
+      } else if (event is GetTrailerEvent) {
+        await _getTrailerHandler(event, emit);
       }
     });
+  }
+
+  Future<void> _getTrailerHandler(event, emit) async {
+    emit(TrailerLoading());
+    final response = await getTrailerUseCase.call(event.movieId);
+    response.fold((l) => emit(TrailerError(_mapErrorToMessage(l))),
+        (r) => emit(TrailerSuccess(r)));
   }
 
   Future<void> _getDetailsHandler(event, emit) async {
@@ -107,6 +117,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         return "An error has occured with the server";
       case NetworkFailure:
         return "Connection Error";
+      case EmptyResultFailure:
+        return "There is no trailer available for this movie";
       default:
         return "An error has occured ";
     }

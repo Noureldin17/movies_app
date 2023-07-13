@@ -6,7 +6,6 @@ import 'package:movies_app/core/api/tmdb_api_constants.dart';
 import 'package:movies_app/features/movies/domain/models/movie_model.dart';
 import 'package:movies_app/features/movies/domain/models/movies_details_model.dart';
 import 'package:movies_app/features/movies/presentation/widgets/gradient_divider.dart';
-import 'package:movies_app/features/movies/presentation/widgets/movie_casts_view.dart';
 import 'package:movies_app/features/movies/presentation/widgets/movie_description.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../utils/colors.dart' as colors;

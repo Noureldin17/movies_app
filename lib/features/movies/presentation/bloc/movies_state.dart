@@ -11,9 +11,17 @@ class MoviesInitial extends MoviesState {}
 
 class MoviesLoading extends MoviesState {}
 
+class TrailerLoading extends MoviesState {}
+
 class DetailsLoading extends MoviesState {}
 
 class CreditsLoading extends MoviesState {}
+
+class TrailerError extends MoviesState {
+  final String message;
+
+  const TrailerError(this.message);
+}
 
 class CreditsError extends MoviesState {
   final String message;
@@ -32,6 +40,12 @@ class TopRatedLoading extends MoviesState {}
 class UpcomingLoading extends MoviesState {}
 
 class ArabicLoading extends MoviesState {}
+
+class TrailerSuccess extends MoviesState {
+  final List<MovieVideo> trailer;
+
+  const TrailerSuccess(this.trailer);
+}
 
 class CreditsSuccess extends MoviesState {
   final List<Member> castsList;

@@ -38,28 +38,30 @@ class _MoviesScrollviewState extends State<MoviesScrollview> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             DefaultText.bold(text: widget.moviesType, fontSize: 16),
             const Spacer(),
-            Row(
-              children: [
-                InkWell(
-                  onTap: () {},
-                  child: Text(
-                    "See more",
-                    style: GoogleFonts.roboto(
-                      decoration: TextDecoration.underline,
-                      color: Colors.blue,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
+            ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.sp))),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'See more',
+                      style: GoogleFonts.roboto(
+                          color: colors.primaryDark,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.w800),
                     ),
-                  ),
-                ),
-                SvgPicture.asset(
-                  'assets/icons/arrow-right.svg',
-                  width: 12.sp,
-                  height: 12.sp,
-                  color: Colors.blue,
-                )
-              ],
-            ),
+                    SvgPicture.asset(
+                      'assets/icons/arrow-right.svg',
+                      height: 12.sp,
+                      width: 12.sp,
+                    )
+                  ],
+                )),
           ]),
         ),
         SingleChildScrollView(

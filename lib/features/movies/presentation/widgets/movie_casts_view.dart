@@ -95,28 +95,32 @@ class _MovieCastsViewState extends State<MovieCastsView> {
                         SizedBox(
                           width: 50.sp,
                           height: 20.sp,
-                          child: Text(
-                            member.originalName,
-                            maxLines: 4,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.roboto(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 8.sp),
+                          child: Center(
+                            child: Text(
+                              member.originalName,
+                              maxLines: 4,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.roboto(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 8.sp),
+                            ),
                           ),
                         ),
                         Padding(padding: EdgeInsets.only(top: 4.sp)),
                         SizedBox(
                           width: 50.sp,
                           height: 20.sp,
-                          child: Text(
-                            member.character,
-                            maxLines: 4,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.roboto(
-                                color: colors.primaryGrey,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 8.sp),
+                          child: Center(
+                            child: Text(
+                              member.character,
+                              maxLines: 4,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.roboto(
+                                  color: colors.primaryGrey,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 8.sp),
+                            ),
                           ),
                         )
                       ],

@@ -18,6 +18,14 @@ class ServerFailure implements Failure {
   bool? get stringify => false;
 }
 
+class EmptyResultFailure implements Failure {
+  @override
+  List<Object?> get props => [];
+
+  @override
+  bool? get stringify => false;
+}
+
 class EmptyCacheFailure implements Failure {
   @override
   List<Object?> get props => [];

@@ -70,7 +70,7 @@ List<Widget> onBoardingList = [
           Image.asset(
             'assets/posters/wick.jpg',
             color: colors.primaryDark.withOpacity(0.4),
-            fit: BoxFit.scaleDown,
+            fit: BoxFit.fitHeight,
             colorBlendMode: BlendMode.darken,
             width: 100.w,
             height: 90.h,
@@ -132,7 +132,7 @@ List<Widget> onBoardingList = [
           Image.asset(
             'assets/posters/leo2.jpg',
             color: colors.primaryDark.withOpacity(0.4),
-            fit: BoxFit.scaleDown,
+            fit: BoxFit.fitHeight,
             colorBlendMode: BlendMode.darken,
             width: 100.w,
             height: 90.h,

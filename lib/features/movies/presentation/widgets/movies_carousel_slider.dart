@@ -1,5 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_svg/svg.dart';
+// import '../../../../utils/colors.dart' as colors;
+import '../../../../utils/default_text.dart';
 import 'package:movies_app/features/movies/domain/models/movie_detail_args_model.dart';
 import 'package:movies_app/features/movies/domain/models/movie_model.dart';
 import 'package:movies_app/features/movies/presentation/widgets/backdrop_image.dart';
@@ -59,7 +63,42 @@ class _MoviesCarouselSliderState extends State<MoviesCarouselSlider>
         ),
         Column(
           children: [
-            Padding(padding: EdgeInsets.only(top: 40.sp)),
+            Padding(
+              padding: EdgeInsets.fromLTRB(12.sp, 22.sp, 12.sp, 0.sp),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const DefaultText.bold(text: 'Discover', fontSize: 22),
+                    const Spacer(),
+                    ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                                side: const BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(12.sp))),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'See more',
+                              style: GoogleFonts.roboto(
+                                  color: Colors.white,
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                            SvgPicture.asset(
+                              'assets/icons/arrow-right.svg',
+                              height: 12.sp,
+                              width: 12.sp,
+                              color: Colors.white,
+                            )
+                          ],
+                        )),
+                  ]),
+            ),
+            Padding(padding: EdgeInsets.only(top: 20.sp)),
             CarouselSlider(
                 items: [
                   ...widget.movieList.map((movie) => CarouselSliderImage(
