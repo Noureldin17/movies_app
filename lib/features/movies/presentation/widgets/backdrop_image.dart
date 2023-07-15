@@ -24,13 +24,23 @@ class _BackdropImageState extends State<BackdropImage> {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      // useOldImageOnUrlChange: true,
       cacheManager: customCacheManager,
       fadeInDuration: const Duration(milliseconds: 300),
       fadeInCurve: Curves.easeIn,
       fadeOutCurve: Curves.easeOut,
       fadeOutDuration: const Duration(milliseconds: 300),
       key: UniqueKey(),
+      errorWidget: (context, url, error) => Container(
+        height: 220.sp,
+        width: 100.w,
+        decoration: BoxDecoration(
+          color: colors.primaryDark,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(12.sp),
+            bottomRight: Radius.circular(12.sp),
+          ),
+        ),
+      ),
       imageUrl: "${TMDBApiConstants.IMAGE_BASE_URL}${widget.backdropPath}",
       imageBuilder: (context, imageProvider) => Stack(
         children: [
@@ -44,7 +54,7 @@ class _BackdropImageState extends State<BackdropImage> {
                 ),
                 image: DecorationImage(
                   image: imageProvider,
-                  fit: BoxFit.fitHeight,
+                  fit: BoxFit.cover,
                 )),
           ),
           Container(

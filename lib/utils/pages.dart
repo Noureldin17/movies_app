@@ -4,3 +4,4 @@ const registerPage = '/registerPage';
 const appMainPage = '/appMainPage';
 const onBoardingPage = '/onBoardingPage';
 const movieDetailPage = '/movieDetailPage';
+const moreMoviesPage = '/moreMoviesPage';

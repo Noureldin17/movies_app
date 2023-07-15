@@ -57,7 +57,7 @@ class AuthenticationRemoteImplWithHttp
             "${TMDBApiConstants.BASE_URL}authentication/session/new?api_key=${TMDBApiConstants.API_KEY}"),
         headers: {"Content-Type": 'application/json'},
         body: json.encode(body));
-    // print(response.body);
+    print(response.body);
     if (response.statusCode == 200) {
       return json.decode(response.body)['success'] == true
           ? json.decode(response.body)['session_id']
@@ -76,7 +76,7 @@ class AuthenticationRemoteImplWithHttp
             "${TMDBApiConstants.BASE_URL}authentication/guest_session/new?api_key=${TMDBApiConstants.API_KEY}"),
         headers: {"Content-Type": 'application/json'});
 
-    // print(response.body);
+    print(response.body);
     if (response.statusCode == 200) {
       return json.decode(response.body)['success'] == true
           ? json.decode(response.body)['guest_session_id']

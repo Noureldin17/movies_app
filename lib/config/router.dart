@@ -4,7 +4,10 @@ import 'package:movies_app/features/authentication/presentation/pages/login_page
 import 'package:movies_app/features/authentication/presentation/pages/onboarding.dart';
 import 'package:movies_app/features/authentication/presentation/pages/welcome_page.dart';
 import 'package:movies_app/app_main_page.dart';
+import 'package:movies_app/features/movies/domain/models/more_movies_args_model.dart';
 import 'package:movies_app/features/movies/domain/models/movie_detail_args_model.dart';
+import 'package:movies_app/features/movies/domain/models/movie_model.dart';
+import 'package:movies_app/features/movies/presentation/pages/more_movies_page.dart';
 import 'package:movies_app/features/movies/presentation/pages/movie_detail_page.dart';
 import '../features/authentication/presentation/bloc/authentication_bloc.dart';
 import '../features/movies/presentation/bloc/movies_bloc.dart';
@@ -51,6 +54,14 @@ class AppRouter {
             create: (context) => di.sl<MoviesBloc>(),
             child: MovieDetailPage(
                 movieDetailArgs: settings.arguments as MovieDetailArgs),
+          ),
+        );
+      case pages.moreMoviesPage:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => di.sl<MoviesBloc>(),
+            child: MoreMoviesPage(
+                moreMoviesArgs: settings.arguments as MoreMoviesArgs),
           ),
         );
 

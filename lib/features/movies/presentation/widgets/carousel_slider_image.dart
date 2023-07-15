@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-// import '../../../../utils/colors.dart' as colors;
+import '../../../../utils/colors.dart' as colors;
 // import '../../../../utils/pages.dart' as pages;
 import 'package:sizer/sizer.dart';
 
@@ -34,7 +34,6 @@ class _CarouselSliderImageState extends State<CarouselSliderImage> {
         transitionOnUserGestures: true,
         tag: '${widget.posterPath}Discover',
         child: CachedNetworkImage(
-          // useOldImageOnUrlChange: true,
           key: UniqueKey(),
           imageUrl: "${TMDBApiConstants.IMAGE_BASE_URL}${widget.posterPath}",
           cacheManager: customCacheManager,
@@ -46,12 +45,14 @@ class _CarouselSliderImageState extends State<CarouselSliderImage> {
                 image: DecorationImage(image: imageProvider, fit: BoxFit.fill)),
           ),
           placeholder: (context, url) => Container(
+            decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [colors.shimmerBase, colors.shimmerLoad]),
+                borderRadius: BorderRadius.circular(12.sp)),
             width: 140.sp,
             height: 200.sp,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(12.sp),
-            ),
           ),
         ),
       ),

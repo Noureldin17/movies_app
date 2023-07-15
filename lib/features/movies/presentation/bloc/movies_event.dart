@@ -9,26 +9,29 @@ abstract class MoviesEvent extends Equatable {
 
 class GetMoviesEvent extends MoviesEvent {
   final String type;
-
-  const GetMoviesEvent(this.type);
+  final int page;
+  const GetMoviesEvent(this.type, this.page);
 }
 
 class GetTopRatedMoviesEvent extends MoviesEvent {
   final String type;
+  final int page;
 
-  const GetTopRatedMoviesEvent(this.type);
+  const GetTopRatedMoviesEvent(this.type, this.page);
 }
 
 class GetUpcomingMoviesEvent extends MoviesEvent {
   final String type;
+  final int page;
 
-  const GetUpcomingMoviesEvent(this.type);
+  const GetUpcomingMoviesEvent(this.type, this.page);
 }
 
 class GetArabicMoviesEvent extends MoviesEvent {
   final String type;
+  final int page;
 
-  const GetArabicMoviesEvent(this.type);
+  const GetArabicMoviesEvent(this.type, this.page);
 }
 
 class GetTrailerEvent extends MoviesEvent {
@@ -47,4 +50,17 @@ class GetDetailsEvent extends MoviesEvent {
   final int movieId;
 
   const GetDetailsEvent(this.movieId);
+}
+
+class GetRecommendationsEvent extends MoviesEvent {
+  final int movieId;
+
+  const GetRecommendationsEvent(this.movieId);
+}
+
+class GetMoreMoviesEvent extends MoviesEvent {
+  final String type;
+  final int page;
+
+  const GetMoreMoviesEvent(this.type, this.page);
 }

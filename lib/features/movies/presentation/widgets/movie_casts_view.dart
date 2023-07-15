@@ -86,10 +86,22 @@ class _MovieCastsViewState extends State<MovieCastsView> {
                                   const AssetImage('assets/blank-profile.png'),
                             ),
                           ),
-                          // placeholder: (context, url) => const CircleAvatar(
-                          //   backgroundImage:
-                          //       AssetImage('assets/blank-profile.png'),
-                          // ),
+                          placeholder: (context, url) => CircleAvatar(
+                            radius: 25.sp,
+                            child: Container(
+                              height: 50.sp,
+                              width: 50.sp,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100.sp),
+                                  gradient: const LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        colors.shimmerBase,
+                                        colors.shimmerLoad
+                                      ])),
+                            ),
+                          ),
                         ),
                         Padding(padding: EdgeInsets.only(top: 4.sp)),
                         SizedBox(

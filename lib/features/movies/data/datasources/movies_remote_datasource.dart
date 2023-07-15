@@ -16,6 +16,7 @@ abstract class MoviesRemoteDatasource {
   Future<List<Member>> getMovieCredits(int movieId);
 
   Future<MovieDetails> getMovieDetails(int movieId);
+  Future<List<Movie>> getMovieRecommendations(int movieId);
 }
 
 class MoviesRemoteImplWithHttp implements MoviesRemoteDatasource {
@@ -31,11 +32,16 @@ class MoviesRemoteImplWithHttp implements MoviesRemoteDatasource {
         headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200) {
       List decodedJson = json.decode(response.body)["cast"];
-      List<Member> actorList =
-          decodedJson.map((json) => Member.fromJson(json)).toList();
-      actorList
-          .retainWhere((element) => element.knownForDepartment == 'Acting');
-      return actorList;
+
+      if (decodedJson.isEmpty) {
+        throw EmptyResultException();
+      } else {
+        List<Member> actorList =
+            decodedJson.map((json) => Member.fromJson(json)).toList();
+        actorList
+            .retainWhere((element) => element.knownForDepartment == 'Acting');
+        return actorList;
+      }
     } else {
       throw ServerException();
     }
@@ -92,6 +98,26 @@ class MoviesRemoteImplWithHttp implements MoviesRemoteDatasource {
       final decodedJson = json.decode(response.body);
       MovieDetails movieDetails = MovieDetails.fromJson(decodedJson);
       return movieDetails;
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<Movie>> getMovieRecommendations(int movieId) async {
+    final response = await client.get(
+        Uri.parse(
+            "${TMDBApiConstants.BASE_URL}movie/$movieId/recommendations?api_key=${TMDBApiConstants.API_KEY}"),
+        headers: {"Content-Type": "application/json"});
+    if (response.statusCode == 200) {
+      List decodedJson = json.decode(response.body)['results'];
+      if (decodedJson.isEmpty) {
+        throw EmptyResultException();
+      } else {
+        List<Movie> recommendations =
+            decodedJson.map((json) => Movie.fromJson(json)).toList();
+        return recommendations;
+      }
     } else {
       throw ServerException();
     }

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:google_fonts/google_fonts.dart';
+import 'package:movies_app/features/movies/domain/models/more_movies_args_model.dart';
 import 'package:movies_app/features/movies/domain/models/movie_detail_args_model.dart';
 import 'package:movies_app/features/movies/presentation/widgets/movies_carousel_slider.dart';
 import 'package:movies_app/features/movies/presentation/widgets/movies_scrollview.dart';
-import 'package:sizer/sizer.dart';
-import 'package:skeletons/skeletons.dart';
 import '../../../../utils/colors.dart' as colors;
 import '../../../../utils/pages.dart' as pages;
 import '../bloc/movies_bloc.dart';
@@ -21,13 +18,14 @@ class MoviesPage extends StatefulWidget {
 class _MoviesPageState extends State<MoviesPage> {
   @override
   void initState() {
-    BlocProvider.of<MoviesBloc>(context).add(const GetMoviesEvent("Discover"));
     BlocProvider.of<MoviesBloc>(context)
-        .add(const GetTopRatedMoviesEvent("Top Rated"));
+        .add(const GetMoviesEvent("Discover", 1));
     BlocProvider.of<MoviesBloc>(context)
-        .add(const GetUpcomingMoviesEvent("Upcoming"));
+        .add(const GetTopRatedMoviesEvent("Top Rated", 1));
     BlocProvider.of<MoviesBloc>(context)
-        .add(const GetArabicMoviesEvent("Arabic"));
+        .add(const GetUpcomingMoviesEvent("Upcoming", 1));
+    BlocProvider.of<MoviesBloc>(context)
+        .add(const GetArabicMoviesEvent("Arabic", 1));
     super.initState();
   }
 
@@ -51,19 +49,17 @@ class _MoviesPageState extends State<MoviesPage> {
                 builder: (context, state) {
                   if (state is MoviesSuccess) {
                     return MoviesCarouselSlider(
-                      // cacheManager: customCacheManager,
                       movieList: state.movieList,
                       onMovieClick: onMovieClick,
+                      onMoreClick: () {
+                        final args =
+                            MoreMoviesArgs('Discover', state.movieList);
+                        Navigator.pushNamed(context, pages.moreMoviesPage,
+                            arguments: args);
+                      },
                     );
                   } else if (state is MoviesLoading) {
-                    return Container(
-                        // color: colors.primaryGrey,
-                        // height: 230.sp,
-                        // width: 100.w,
-                        // child: const Center(
-                        //   child: CircularProgressIndicator(),
-                        // ),
-                        );
+                    return Container();
                   } else if (state is MoviesError) {
                     return Container();
                   } else {
@@ -79,17 +75,18 @@ class _MoviesPageState extends State<MoviesPage> {
                 builder: (context, state) {
                   if (state is TopRatedSuccess) {
                     return MoviesScrollview(
-                        // cacheManager: customCacheManager,
+                        isLoading: false,
+                        hasMore: true,
                         onMovieClick: onMovieClick,
                         movieList: state.movieList,
                         moviesType: "Top Rated");
                   } else if (state is TopRatedLoading) {
-                    return Container(
-                      height: 125.sp,
-                      width: 90.sp,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.sp)),
-                    );
+                    return MoviesScrollview(
+                        isLoading: true,
+                        hasMore: true,
+                        onMovieClick: () {},
+                        movieList: const [],
+                        moviesType: "Top Rated");
                   } else {
                     return const SizedBox();
                   }
@@ -103,17 +100,18 @@ class _MoviesPageState extends State<MoviesPage> {
                 builder: (context, state) {
                   if (state is UpcomingSuccess) {
                     return MoviesScrollview(
-                        // cacheManager: customCacheManager,
+                        isLoading: false,
+                        hasMore: true,
                         onMovieClick: onMovieClick,
                         movieList: state.movieList,
                         moviesType: "Upcoming");
                   } else if (state is UpcomingLoading) {
-                    return Container(
-                      height: 125.sp,
-                      width: 90.sp,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.sp)),
-                    );
+                    return MoviesScrollview(
+                        isLoading: true,
+                        hasMore: true,
+                        onMovieClick: () {},
+                        movieList: const [],
+                        moviesType: "Upcoming");
                   } else {
                     return const SizedBox();
                   }
@@ -127,61 +125,23 @@ class _MoviesPageState extends State<MoviesPage> {
                 builder: (context, state) {
                   if (state is ArabicSuccess) {
                     return MoviesScrollview(
-                        // cacheManager: customCacheManager,
+                        isLoading: false,
+                        hasMore: true,
                         onMovieClick: onMovieClick,
                         movieList: state.movieList,
                         moviesType: "Arabic");
                   } else if (state is ArabicLoading) {
-                    return Container(
-                      height: 125.sp,
-                      width: 90.sp,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.sp)),
-                    );
+                    return MoviesScrollview(
+                        isLoading: true,
+                        hasMore: true,
+                        onMovieClick: () {},
+                        movieList: const [],
+                        moviesType: "Arabic");
                   } else {
                     return const SizedBox();
                   }
                 },
               ),
-              Skeleton(
-                  darkShimmerGradient: const LinearGradient(colors: [
-                    Color.fromARGB(255, 31, 31, 60),
-                    Color.fromARGB(255, 17, 17, 40),
-                  ]),
-                  isLoading: true,
-                  themeMode: ThemeMode.dark,
-                  skeleton: Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: colors.primaryDark,
-                            borderRadius: BorderRadius.circular(12.sp)),
-                        width: 90.sp,
-                        height: 125.sp,
-                      ),
-                      SizedBox(
-                        height: 8.sp,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: colors.primaryDark,
-                            borderRadius: BorderRadius.circular(12.sp)),
-                        width: 60.sp,
-                        height: 10.sp,
-                      ),
-                      SizedBox(
-                        height: 6.sp,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: colors.primaryDark,
-                            borderRadius: BorderRadius.circular(12.sp)),
-                        width: 25.sp,
-                        height: 10.sp,
-                      ),
-                    ],
-                  ),
-                  child: Container()),
             ],
           ),
         ),

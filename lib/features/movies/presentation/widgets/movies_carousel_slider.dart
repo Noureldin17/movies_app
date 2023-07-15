@@ -12,10 +12,15 @@ import 'package:sizer/sizer.dart';
 import '../../../../core/api/tmdb_api_constants.dart';
 
 class MoviesCarouselSlider extends StatefulWidget {
-  const MoviesCarouselSlider(
-      {super.key, required this.movieList, required this.onMovieClick});
+  const MoviesCarouselSlider({
+    super.key,
+    required this.movieList,
+    required this.onMovieClick,
+    required this.onMoreClick,
+  });
   final List<Movie> movieList;
   final Function onMovieClick;
+  final Function onMoreClick;
   @override
   State<MoviesCarouselSlider> createState() => _MoviesCarouselSliderState();
 }
@@ -71,30 +76,35 @@ class _MoviesCarouselSliderState extends State<MoviesCarouselSlider>
                     const DefaultText.bold(text: 'Discover', fontSize: 22),
                     const Spacer(),
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          widget.onMoreClick();
+                        },
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.transparent,
                             shape: RoundedRectangleBorder(
                                 side: const BorderSide(color: Colors.white),
-                                borderRadius: BorderRadius.circular(12.sp))),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'See more',
-                              style: GoogleFonts.roboto(
-                                  color: Colors.white,
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.w800),
-                            ),
-                            SvgPicture.asset(
-                              'assets/icons/arrow-right.svg',
-                              height: 12.sp,
-                              width: 12.sp,
-                              color: Colors.white,
-                            )
-                          ],
+                                borderRadius: BorderRadius.circular(16.sp))),
+                        child: SizedBox(
+                          height: 30.sp,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'See more',
+                                style: GoogleFonts.roboto(
+                                    color: Colors.white,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                              SvgPicture.asset(
+                                'assets/icons/arrow-right.svg',
+                                height: 12.sp,
+                                width: 12.sp,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
                         )),
                   ]),
             ),

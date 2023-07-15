@@ -11,6 +11,8 @@ class MoviesInitial extends MoviesState {}
 
 class MoviesLoading extends MoviesState {}
 
+class MoreMoviesLoading extends MoviesState {}
+
 class TrailerLoading extends MoviesState {}
 
 class DetailsLoading extends MoviesState {}
@@ -41,6 +43,8 @@ class UpcomingLoading extends MoviesState {}
 
 class ArabicLoading extends MoviesState {}
 
+class RecommendationsLoading extends MoviesState {}
+
 class TrailerSuccess extends MoviesState {
   final List<MovieVideo> trailer;
 
@@ -65,6 +69,12 @@ class MoviesSuccess extends MoviesState {
   const MoviesSuccess(this.movieList);
 }
 
+class MoreMoviesSuccess extends MoviesState {
+  final List<Movie> movieList;
+
+  const MoreMoviesSuccess(this.movieList);
+}
+
 class TopRatedSuccess extends MoviesState {
   final List<Movie> movieList;
 
@@ -83,10 +93,22 @@ class ArabicSuccess extends MoviesState {
   const ArabicSuccess(this.movieList);
 }
 
+class RecommendationsSuccess extends MoviesState {
+  final List<Movie> movieList;
+
+  const RecommendationsSuccess(this.movieList);
+}
+
 class MoviesError extends MoviesState {
   final String message;
 
   const MoviesError(this.message);
+}
+
+class MoreMoviesError extends MoviesState {
+  final String message;
+
+  const MoreMoviesError(this.message);
 }
 
 class ArabicError extends MoviesState {
@@ -105,4 +127,10 @@ class UpcomingError extends MoviesState {
   final String message;
 
   const UpcomingError(this.message);
+}
+
+class RecommendationsError extends MoviesState {
+  final String message;
+
+  const RecommendationsError(this.message);
 }

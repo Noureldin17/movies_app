@@ -14,7 +14,11 @@ class Movie {
     genreIds = json['genre_ids'].cast<int>();
     movieId = json['id'];
     posterPath = json['poster_path'] ?? ' ';
-    releaseDate = json['release_date'] ?? ' ';
+    try {
+      releaseDate = DateTime.parse(json['release_date']).year.toString();
+    } catch (_) {
+      releaseDate = '????';
+    }
     // movieTitle = json['title'];
     overview = json['overview'];
     movieTitle = json['original_title'];

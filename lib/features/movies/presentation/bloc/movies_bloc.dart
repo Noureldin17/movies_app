@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_credits_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_details_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_movies_usecase.dart';
+import 'package:movies_app/features/movies/domain/usecases/get_recommendations_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_trailer_usecase.dart';
 
 import '../../../../core/error/failures.dart';
@@ -21,15 +22,13 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   final GetMoviesUseCase getMoviesUseCase;
   final GetTrailerUseCase getTrailerUseCase;
   final GetMovieDetailsUseCase getMovieDetailsUseCase;
-  int page = 1;
-  int pageToprated = 1;
-  int pageUpcoming = 1;
-  int pageArabic = 1;
+  final GetRecommendationsUseCase getRecommendationsUseCase;
 
   MoviesBloc(
       {required this.getCreditsUseCase,
       required this.getMoviesUseCase,
       required this.getTrailerUseCase,
+      required this.getRecommendationsUseCase,
       required this.getMovieDetailsUseCase})
       : super(MoviesInitial()) {
     on<MoviesEvent>(transformer: sequential(), (event, emit) async {
@@ -47,6 +46,10 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         await _getCreditsHandler(event, emit);
       } else if (event is GetTrailerEvent) {
         await _getTrailerHandler(event, emit);
+      } else if (event is GetRecommendationsEvent) {
+        await _getRecommendationsHandler(event, emit);
+      } else if (event is GetMoreMoviesEvent) {
+        await _getMoreMoviesHandler(event, emit);
       }
     });
   }
@@ -56,6 +59,13 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     final response = await getTrailerUseCase.call(event.movieId);
     response.fold((l) => emit(TrailerError(_mapErrorToMessage(l))),
         (r) => emit(TrailerSuccess(r)));
+  }
+
+  Future<void> _getRecommendationsHandler(event, emit) async {
+    emit(RecommendationsLoading());
+    final response = await getRecommendationsUseCase.call(event.movieId);
+    response.fold((l) => emit(RecommendationsError(_mapErrorToMessage(l))),
+        (r) => emit(RecommendationsSuccess(r)));
   }
 
   Future<void> _getDetailsHandler(event, emit) async {
@@ -74,39 +84,41 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
 
   Future<void> _getMoviesHandler(event, emit) async {
     emit(MoviesLoading());
-    final response = await getMoviesUseCase.call(page, event.type);
+    final response = await getMoviesUseCase.call(event.page, event.type);
 
     response.fold((l) => emit(MoviesError(_mapErrorToMessage(l))), (r) {
-      page += 1;
       emit(MoviesSuccess(r));
+    });
+  }
+
+  Future<void> _getMoreMoviesHandler(event, emit) async {
+    emit(MoreMoviesLoading());
+    final response = await getMoviesUseCase.call(event.page, event.type);
+    response.fold((l) => emit(MoreMoviesError(_mapErrorToMessage(l))), (r) {
+      emit(MoreMoviesSuccess(r));
     });
   }
 
   Future<void> _getTopRatedMoviesHandler(event, emit) async {
     emit(TopRatedLoading());
-    final response = await getMoviesUseCase.call(pageToprated, event.type);
+    final response = await getMoviesUseCase.call(event.page, event.type);
     response.fold((l) => emit(TopRatedError(_mapErrorToMessage(l))), (r) {
-      pageToprated += 1;
-      emit(TopRatedSuccess(
-        r,
-      ));
+      emit(TopRatedSuccess(r));
     });
   }
 
   Future<void> _getArabicMoviesHandler(event, emit) async {
     emit(ArabicLoading());
-    final response = await getMoviesUseCase.call(pageArabic, event.type);
+    final response = await getMoviesUseCase.call(event.page, event.type);
     response.fold((l) => emit(ArabicError(_mapErrorToMessage(l))), (r) {
-      pageArabic += 1;
       emit(ArabicSuccess(r));
     });
   }
 
   Future<void> _getUpcomingMoviesHandler(event, emit) async {
     emit(UpcomingLoading());
-    final response = await getMoviesUseCase.call(pageUpcoming, event.type);
+    final response = await getMoviesUseCase.call(event.page, event.type);
     response.fold((l) => emit(UpcomingError(_mapErrorToMessage(l))), (r) {
-      pageUpcoming += 1;
       emit(UpcomingSuccess(r));
     });
   }
@@ -118,7 +130,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       case NetworkFailure:
         return "Connection Error";
       case EmptyResultFailure:
-        return "There is no trailer available for this movie";
+        return "There are no results available";
       default:
         return "An error has occured ";
     }

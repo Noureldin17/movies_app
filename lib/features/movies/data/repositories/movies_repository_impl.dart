@@ -26,6 +26,8 @@ class MoviesRepoImpl implements MoviesRepository {
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());
+      } on EmptyResultException {
+        return Left(EmptyResultFailure());
       }
     } else {
       return Left(NetworkFailure());
@@ -140,6 +142,24 @@ class MoviesRepoImpl implements MoviesRepository {
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Movie>>> getMovieRecommendations(
+      int movieId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final response =
+            await remoteDatasource.getMovieRecommendations(movieId);
+        return Right(response);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on EmptyResultException {
+        return Left(EmptyResultFailure());
       }
     } else {
       return Left(NetworkFailure());

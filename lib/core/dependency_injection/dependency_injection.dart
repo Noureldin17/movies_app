@@ -18,6 +18,7 @@ import 'package:movies_app/features/movies/domain/repositories/movies_repository
 import 'package:movies_app/features/movies/domain/usecases/get_credits_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_details_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_movies_usecase.dart';
+import 'package:movies_app/features/movies/domain/usecases/get_recommendations_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_trailer_usecase.dart';
 import 'package:movies_app/features/movies/presentation/bloc/movies_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,6 +36,7 @@ Future<void> init() async {
       checkOnBoardUseCase: sl(),
       onBoardUseCase: sl()));
   sl.registerFactory(() => MoviesBloc(
+      getRecommendationsUseCase: sl(),
       getCreditsUseCase: sl(),
       getMoviesUseCase: sl(),
       getTrailerUseCase: sl(),
@@ -50,6 +52,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetTrailerUseCase(sl()));
   sl.registerLazySingleton(() => GetMoviesUseCase(sl()));
   sl.registerLazySingleton(() => GetMovieDetailsUseCase(sl()));
+  sl.registerLazySingleton(() => GetRecommendationsUseCase(sl()));
   // sl.registerLazySingleton(() => GetTopRatedMoviesUseCase(sl()));
   // sl.registerLazySingleton(() => GetUpcomingMoviesUseCase(sl()));
   // repositories
