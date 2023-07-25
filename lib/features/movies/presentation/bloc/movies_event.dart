@@ -52,6 +52,12 @@ class GetDetailsEvent extends MoviesEvent {
   const GetDetailsEvent(this.movieId);
 }
 
+class GetAccountStatesEvent extends MoviesEvent {
+  final int movieId;
+
+  const GetAccountStatesEvent(this.movieId);
+}
+
 class GetRecommendationsEvent extends MoviesEvent {
   final int movieId;
 

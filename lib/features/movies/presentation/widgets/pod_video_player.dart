@@ -40,7 +40,7 @@ class _YoutubePodPlayerState extends State<YoutubePodPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    double _dragPosition = 0;
+    double dragPosition = 0;
 
     return GestureDetector(
       onTap: () => controller.isInitialised ? Navigator.pop(context) : () {},
@@ -78,21 +78,21 @@ class _YoutubePodPlayerState extends State<YoutubePodPlayer> {
                 },
                 onVerticalDragUpdate: (details) {
                   setState(() {
-                    _dragPosition += details.delta.dy;
+                    dragPosition += details.delta.dy;
                   });
                 },
                 onVerticalDragEnd: (details) {
-                  if (_dragPosition < 0) {
+                  if (dragPosition < 0) {
                     controller.enableFullScreen();
                   }
 
-                  _dragPosition = 0;
+                  dragPosition = 0;
                 },
                 child: PodVideoPlayer(
                   videoTitle: Padding(
                     padding: EdgeInsets.only(left: 8.sp, top: 8.sp),
                     child: Text(
-                      "${widget.movieVideo.name}",
+                      widget.movieVideo.name,
                       style: GoogleFonts.roboto(
                           color: colors.primarySilver,
                           fontSize: 12.sp,

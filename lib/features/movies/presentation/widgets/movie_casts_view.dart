@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:movies_app/core/api/tmdb_api_constants.dart';
@@ -10,8 +11,10 @@ import 'package:sizer/sizer.dart';
 import '../../../../utils/colors.dart' as colors;
 
 class MovieCastsView extends StatefulWidget {
-  const MovieCastsView({super.key, required this.cast});
+  const MovieCastsView(
+      {super.key, required this.cast, required this.cacheManager});
   final List<Member> cast;
+  final CacheManager cacheManager;
   @override
   State<MovieCastsView> createState() => _MovieCastsViewState();
 }
@@ -47,6 +50,7 @@ class _MovieCastsViewState extends State<MovieCastsView> {
                     child: Column(
                       children: [
                         CachedNetworkImage(
+                          cacheManager: widget.cacheManager,
                           imageUrl:
                               '${TMDBApiConstants.IMAGE_BASE_URL}${member.profilePath}',
                           imageBuilder: (context, imageProvider) => Container(

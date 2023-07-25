@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/svg.dart';
 // import '../../../../utils/colors.dart' as colors;
@@ -27,11 +28,23 @@ class MoviesCarouselSlider extends StatefulWidget {
 
 class _MoviesCarouselSliderState extends State<MoviesCarouselSlider>
     with WidgetsBindingObserver {
+  late CacheManager customCacheManager;
+
   String backdropPath = '';
   bool animate = true;
 
   @override
+  void deactivate() {
+    setState(() {
+      animate = false;
+    });
+    super.deactivate();
+  }
+
+  @override
   void initState() {
+    customCacheManager = CacheManager(Config('customBackdropKey',
+        stalePeriod: const Duration(hours: 5), maxNrOfCacheObjects: 100));
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -61,15 +74,20 @@ class _MoviesCarouselSliderState extends State<MoviesCarouselSlider>
           tag: backdropPath,
           child: backdropPath == ''
               ? BackdropImage(
+                  cacheManager: customCacheManager,
                   backdropPath: widget.movieList[0].backdropPath,
                   sigma: 15,
                 )
-              : BackdropImage(backdropPath: backdropPath, sigma: 15),
+              : BackdropImage(
+                  backdropPath: backdropPath,
+                  sigma: 15,
+                  cacheManager: customCacheManager,
+                ),
         ),
         Column(
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(12.sp, 22.sp, 12.sp, 0.sp),
+              padding: EdgeInsets.fromLTRB(12.sp, 24.sp, 12.sp, 0.sp),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

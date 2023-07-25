@@ -3,6 +3,7 @@ import 'package:movies_app/core/error/exceptions.dart';
 import 'package:movies_app/core/network/network_info.dart';
 import 'package:movies_app/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
+import 'package:movies_app/features/movies/domain/models/account_states_model.dart';
 import 'package:movies_app/features/movies/domain/models/movies_details_model.dart';
 import '../../domain/models/movie_credits_model.dart';
 import '../../domain/models/movie_model.dart';
@@ -155,6 +156,24 @@ class MoviesRepoImpl implements MoviesRepository {
       try {
         final response =
             await remoteDatasource.getMovieRecommendations(movieId);
+        return Right(response);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on EmptyResultException {
+        return Left(EmptyResultFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, AccountStates>> getAccountStates(int movieId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final sessionId = await localDatasource.getSessionId();
+        final response =
+            await remoteDatasource.getAccountStates(movieId, sessionId);
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());

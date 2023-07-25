@@ -23,3 +23,12 @@ class LogoutEvent extends AuthenticationEvent {}
 class OnBoardEvent extends AuthenticationEvent {}
 
 class CheckOnBoardEvent extends AuthenticationEvent {}
+
+class AddToWatchListEvent extends AuthenticationEvent {
+  final int movieId;
+  final bool value;
+
+  const AddToWatchListEvent(this.movieId, this.value);
+}
+
+class GetWatchListEvent extends AuthenticationEvent {}

@@ -7,6 +7,8 @@ import '../../domain/models/movie_model.dart';
 abstract class MoviesLocalDatasource {
   Future<List<Movie>> getCachedMovies(String type);
 
+  Future<String> getSessionId();
+
   Future<Unit> cacheMovies(List<Movie> movies, String type);
 }
 
@@ -45,5 +47,11 @@ class MoviesLocalImpl implements MoviesLocalDatasource {
     } else {
       throw EmptyCacheException();
     }
+  }
+
+  @override
+  Future<String> getSessionId() async {
+    final value = sharedPreferences.getString('session_id');
+    return value.toString();
   }
 }

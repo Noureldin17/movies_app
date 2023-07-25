@@ -18,6 +18,7 @@ class MoviesScrollview extends StatefulWidget {
       required this.moviesType,
       required this.hasMore,
       required this.isLoading,
+      required this.onMoreClick,
       required this.onMovieClick});
 
   final List<Movie> movieList;
@@ -25,15 +26,22 @@ class MoviesScrollview extends StatefulWidget {
   final bool hasMore;
   final bool isLoading;
   final Function onMovieClick;
+  final Function onMoreClick;
 
   @override
   State<MoviesScrollview> createState() => _MoviesScrollviewState();
 }
 
 class _MoviesScrollviewState extends State<MoviesScrollview> {
-  static final customCacheManager = CacheManager(Config('customPosterKey',
-      stalePeriod: const Duration(hours: 5), maxNrOfCacheObjects: 100));
+  late CacheManager customCacheManager;
   final Key key = UniqueKey();
+  @override
+  void initState() {
+    customCacheManager = CacheManager(Config('customPosterKey',
+        stalePeriod: const Duration(hours: 1), maxNrOfCacheObjects: 100));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -58,7 +66,9 @@ class _MoviesScrollviewState extends State<MoviesScrollview> {
             const Spacer(),
             widget.hasMore
                 ? ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      widget.onMoreClick();
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
@@ -108,7 +118,6 @@ class _MoviesScrollviewState extends State<MoviesScrollview> {
                                       widget.moviesType +
                                       key.toString(),
                                   child: CachedNetworkImage(
-                                    key: UniqueKey(),
                                     cacheManager: customCacheManager,
                                     imageUrl:
                                         "${TMDBApiConstants.IMAGE_BASE_URL}${movie.posterPath}",

@@ -5,7 +5,9 @@ import 'package:movies_app/features/authentication/data/datasources/auth_local_d
 import 'package:movies_app/features/authentication/data/datasources/auth_remote_datasource.dart';
 import 'package:movies_app/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:movies_app/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:movies_app/features/authentication/domain/usecases/add_to_watchlist_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/check_onboard_usecase.dart';
+import 'package:movies_app/features/authentication/domain/usecases/get_watchlist_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/guest_login_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/login_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/logout_usecase.dart';
@@ -15,6 +17,7 @@ import 'package:movies_app/features/movies/data/datasources/movies_local_datasou
 import 'package:movies_app/features/movies/data/datasources/movies_remote_datasource.dart';
 import 'package:movies_app/features/movies/data/repositories/movies_repository_impl.dart';
 import 'package:movies_app/features/movies/domain/repositories/movies_repository.dart';
+import 'package:movies_app/features/movies/domain/usecases/get_account_states_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_credits_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_details_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_movies_usecase.dart';
@@ -33,6 +36,8 @@ Future<void> init() async {
       loginUseCase: sl(),
       guestLoginUseCase: sl(),
       logoutUseCase: sl(),
+      addToWatchListUsecase: sl(),
+      getWatchListUsecase: sl(),
       checkOnBoardUseCase: sl(),
       onBoardUseCase: sl()));
   sl.registerFactory(() => MoviesBloc(
@@ -40,6 +45,7 @@ Future<void> init() async {
       getCreditsUseCase: sl(),
       getMoviesUseCase: sl(),
       getTrailerUseCase: sl(),
+      getAccountStatesUsecase: sl(),
       getMovieDetailsUseCase: sl()));
   // UseCases
   sl.registerLazySingleton(() => LoginUseCase(sl()));
@@ -47,12 +53,15 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LogoutUseCase(sl()));
   sl.registerLazySingleton(() => CheckOnBoardUseCase(sl()));
   sl.registerLazySingleton(() => OnBoardUseCase(sl()));
+  sl.registerLazySingleton(() => AddToWatchListUsecase(sl()));
+  sl.registerLazySingleton(() => GetWatchListUsecase(sl()));
 
   sl.registerLazySingleton(() => GetCreditsUseCase(sl()));
   sl.registerLazySingleton(() => GetTrailerUseCase(sl()));
   sl.registerLazySingleton(() => GetMoviesUseCase(sl()));
   sl.registerLazySingleton(() => GetMovieDetailsUseCase(sl()));
   sl.registerLazySingleton(() => GetRecommendationsUseCase(sl()));
+  sl.registerLazySingleton(() => GetAccountStatesUsecase(sl()));
   // sl.registerLazySingleton(() => GetTopRatedMoviesUseCase(sl()));
   // sl.registerLazySingleton(() => GetUpcomingMoviesUseCase(sl()));
   // repositories

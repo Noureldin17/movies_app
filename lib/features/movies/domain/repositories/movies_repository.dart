@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:movies_app/core/error/failures.dart';
+import 'package:movies_app/features/movies/domain/models/account_states_model.dart';
 import 'package:movies_app/features/movies/domain/models/movies_details_model.dart';
 
 import '../models/movie_credits_model.dart';
@@ -14,6 +15,8 @@ abstract class MoviesRepository {
   Future<Either<Failure, List<Member>>> getMovieCredits(int movieId);
 
   Future<Either<Failure, MovieDetails>> getMovieDetails(int movieId);
+
+  Future<Either<Failure, AccountStates>> getAccountStates(int movieId);
 
   Future<Either<Failure, List<Movie>>> getMovieRecommendations(int movieId);
 

@@ -6,6 +6,7 @@ class Movie {
   late String posterPath;
   late String overview;
   late String releaseDate;
+  late num voteAverage;
   late List<int> genreIds;
 
   Movie.fromJson(Map<String, dynamic> json) {
@@ -21,6 +22,8 @@ class Movie {
     }
     // movieTitle = json['title'];
     overview = json['overview'];
+    voteAverage = json['vote_average'];
+
     movieTitle = json['original_title'];
   }
 

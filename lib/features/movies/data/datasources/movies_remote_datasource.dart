@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:movies_app/core/api/tmdb_api_constants.dart';
 import 'package:movies_app/core/error/exceptions.dart';
+import 'package:movies_app/features/movies/domain/models/account_states_model.dart';
 import 'package:movies_app/features/movies/domain/models/movies_details_model.dart';
 import '../../domain/models/movie_credits_model.dart';
 import '../../domain/models/movie_model.dart';
@@ -16,6 +17,9 @@ abstract class MoviesRemoteDatasource {
   Future<List<Member>> getMovieCredits(int movieId);
 
   Future<MovieDetails> getMovieDetails(int movieId);
+
+  Future<AccountStates> getAccountStates(int movieId, String sessionId);
+
   Future<List<Movie>> getMovieRecommendations(int movieId);
 }
 
@@ -76,12 +80,10 @@ class MoviesRemoteImplWithHttp implements MoviesRemoteDatasource {
         Uri.parse(
             "${TMDBApiConstants.BASE_URL}${endpoint}api_key=${TMDBApiConstants.API_KEY}&page=$page"),
         headers: {"Content-Type": "application/json"});
-    print(response.body);
     if (response.statusCode == 200) {
       List decodedJson = json.decode(response.body)["results"];
       List<Movie> movieList =
           decodedJson.map((json) => Movie.fromJson(json)).toList();
-      print(movieList);
       return movieList;
     } else {
       throw ServerException();
@@ -118,6 +120,23 @@ class MoviesRemoteImplWithHttp implements MoviesRemoteDatasource {
             decodedJson.map((json) => Movie.fromJson(json)).toList();
         return recommendations;
       }
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<AccountStates> getAccountStates(int movieId, String sessionId) async {
+    final response = await client.get(
+        Uri.parse(
+            "${TMDBApiConstants.BASE_URL}movie/$movieId/account_states?session_id=$sessionId&api_key=${TMDBApiConstants.API_KEY}"),
+        headers: {"Content-Type": "application/json"});
+    if (response.statusCode == 200) {
+      final decodedJson = json.decode(response.body);
+      AccountStates accountStates = AccountStates.fromJson(decodedJson);
+      return accountStates;
+    } else if (response.statusCode == 404) {
+      throw EmptyResultException();
     } else {
       throw ServerException();
     }

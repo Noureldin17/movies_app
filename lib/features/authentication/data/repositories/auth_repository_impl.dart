@@ -7,6 +7,7 @@ import 'package:movies_app/features/authentication/domain/models/request_token_m
 import 'package:movies_app/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:movies_app/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:movies_app/features/movies/domain/models/movie_model.dart';
 
 class AuthenticationRepoImpl implements AuthenticationRepo {
   final AuthenticationRemoteDataSource remoteDataSource;
@@ -83,7 +84,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       try {
         final sessionId = await remoteDataSource.createGuestSession();
         if (sessionId != null) {
-          // localDataSource.saveSessionId(sessionId);
+          localDataSource.saveSessionId(sessionId);
           return const Right(unit);
         } else {
           return Left(InvalidCredentialsFailure());
@@ -111,6 +112,40 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       return const Right(unit);
     } catch (_) {
       return Left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> addToWatchList(int movieId, bool value) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final sessionId = await localDataSource.getSessionId();
+        await remoteDataSource.addToWatchList(movieId, value, sessionId);
+        return const Right(unit);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on UnAuthorizedException {
+        return Left(UnAuthorizedFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<Movie>>> getWatchList() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final sessionId = await localDataSource.getSessionId();
+        final response = await remoteDataSource.getWatchList(sessionId);
+        return Right(response);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on UnAuthorizedException {
+        return Left(UnAuthorizedFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
     }
   }
 }

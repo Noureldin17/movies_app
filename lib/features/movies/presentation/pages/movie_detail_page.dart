@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movies_app/features/movies/presentation/bloc/movies_bloc.dart';
 import 'package:movies_app/features/movies/presentation/pages/sliver_app_bar_page.dart';
@@ -10,6 +11,7 @@ import 'package:movies_app/features/movies/presentation/widgets/movie_info.dart'
 import 'package:movies_app/features/movies/presentation/widgets/movies_scrollview.dart';
 import 'package:movies_app/features/movies/presentation/widgets/pod_video_player.dart';
 import '../../../../utils/pages.dart' as pages;
+import '../../domain/models/more_movies_args_model.dart';
 import '../../domain/models/movie_detail_args_model.dart';
 
 class MovieDetailPage extends StatefulWidget {
@@ -22,14 +24,25 @@ class MovieDetailPage extends StatefulWidget {
 class _MovieDetailPageState extends State<MovieDetailPage> {
   bool isButtonVisible = true;
   bool isVideoVisible = true;
+  late CacheManager customCacheManager;
+
+  @override
+  void deactivate() async {
+    await customCacheManager.emptyCache();
+    super.deactivate();
+  }
 
   @override
   void initState() {
+    customCacheManager = CacheManager(Config('castCacheKey',
+        stalePeriod: const Duration(minutes: 10), maxNrOfCacheObjects: 100));
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
     BlocProvider.of<MoviesBloc>(context)
         .add(GetDetailsEvent(widget.movieDetailArgs.movie.movieId));
+    BlocProvider.of<MoviesBloc>(context)
+        .add(GetAccountStatesEvent(widget.movieDetailArgs.movie.movieId));
     BlocProvider.of<MoviesBloc>(context)
         .add(GetCreditsEvent(widget.movieDetailArgs.movie.movieId));
     BlocProvider.of<MoviesBloc>(context)
@@ -47,7 +60,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     return SliverAppBarPage(
       movieDetailArgs: widget.movieDetailArgs,
       body: SliverToBoxAdapter(
-        child: Container(
+        child: SizedBox(
           child: Column(
             children: [
               BlocBuilder<MoviesBloc, MoviesState>(
@@ -75,6 +88,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                   if (state is CreditsSuccess) {
                     return MovieCastsView(
                       cast: state.castsList,
+                      cacheManager: customCacheManager,
                     );
                   } else if (state is CreditsLoading) {
                     return Container();
@@ -128,6 +142,12 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                 builder: (context, state) {
                   if (state is RecommendationsSuccess) {
                     return MoviesScrollview(
+                      onMoreClick: () {
+                        final args =
+                            MoreMoviesArgs('Recommendations', state.movieList);
+                        Navigator.pushNamed(context, pages.moreMoviesPage,
+                            arguments: args);
+                      },
                       isLoading: false,
                       hasMore: false,
                       movieList: state.movieList,
@@ -138,6 +158,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                     return Container();
                   } else if (state is RecommendationsLoading) {
                     return MoviesScrollview(
+                        onMoreClick: () {},
                         isLoading: true,
                         hasMore: false,
                         onMovieClick: onMovieClick,

@@ -1,3 +1,4 @@
+// import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:movies_app/features/movies/domain/models/movie_model.dart';
 
 class MovieDetailArgs {
@@ -7,5 +8,6 @@ class MovieDetailArgs {
   MovieDetailArgs(
     this.tag,
     this.movie,
+    // this.cacheManager,
   );
 }

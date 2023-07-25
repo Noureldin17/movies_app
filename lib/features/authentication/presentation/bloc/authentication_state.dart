@@ -43,3 +43,31 @@ class OnBoardCheckedState extends AuthenticationState {
 
   const OnBoardCheckedState(this.isOnBoard);
 }
+
+class WatchListSuccess extends AuthenticationState {
+  final List<Movie> watchList;
+
+  const WatchListSuccess(this.watchList);
+}
+
+class WatchListLoading extends AuthenticationState {}
+
+class WatchListError extends AuthenticationState {
+  final String message;
+
+  const WatchListError(this.message);
+}
+
+class AddToWatchListSuccess extends AuthenticationState {
+  final bool value;
+
+  const AddToWatchListSuccess(this.value);
+}
+
+class AddToWatchListError extends AuthenticationState {
+  final String message;
+
+  const AddToWatchListError(this.message);
+}
+
+class AddToWatchListLoading extends AuthenticationState {}

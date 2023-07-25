@@ -25,8 +25,8 @@ class SliverAppBarPage extends StatefulWidget {
 
 class _SliverAppBarPageState extends State<SliverAppBarPage>
     with SingleTickerProviderStateMixin {
-  static final customCacheManager2 = CacheManager(Config('customPosterKey',
-      stalePeriod: const Duration(hours: 5), maxNrOfCacheObjects: 100));
+  late CacheManager customCacheManager2;
+  late CacheManager customCacheManager;
   final controller = ScrollController();
 
   bool isButtonVisible = true;
@@ -42,6 +42,10 @@ class _SliverAppBarPageState extends State<SliverAppBarPage>
 
   @override
   void initState() {
+    customCacheManager = CacheManager(Config('customBackdropKey',
+        stalePeriod: const Duration(hours: 5), maxNrOfCacheObjects: 100));
+    customCacheManager2 = CacheManager(Config('customPosterKey',
+        stalePeriod: const Duration(hours: 5), maxNrOfCacheObjects: 100));
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -122,6 +126,7 @@ class _SliverAppBarPageState extends State<SliverAppBarPage>
               shadowColor: Colors.transparent,
               flexibleSpace: FlexibleSpaceBar(
                 background: BackdropImage(
+                    cacheManager: customCacheManager,
                     backdropPath: widget.movieDetailArgs.movie.backdropPath,
                     sigma: 2),
                 centerTitle: false,
@@ -143,6 +148,24 @@ class _SliverAppBarPageState extends State<SliverAppBarPage>
                           height: posterHeight,
                           width: posterWidth,
                           fit: BoxFit.fill,
+                          // loadingBuilder: (context, child, loadingProgress) =>
+                          //     Skeleton(
+                          //         darkShimmerGradient:
+                          //             const LinearGradient(colors: [
+                          //           colors.shimmerLoad,
+                          //           colors.shimmerBase,
+                          //         ]),
+                          //         isLoading: true,
+                          //         themeMode: ThemeMode.dark,
+                          //         skeleton: Column(
+                          //           children: [
+                          //             SizedBox(
+                          //               width: posterWidth,
+                          //               height: posterHeight,
+                          //             ),
+                          //           ],
+                          //         ),
+                          //         child: Container()),
                           errorBuilder: (context, error, stackTrace) =>
                               Container(
                             decoration: const BoxDecoration(
@@ -176,6 +199,7 @@ class _SliverAppBarPageState extends State<SliverAppBarPage>
                       child: Text(
                         widget.movieDetailArgs.movie.movieTitle,
                         maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.roboto(
                             color: Colors.white,
                             fontWeight: FontWeight.w500,

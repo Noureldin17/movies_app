@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool passwordHidden = true;
+
   @override
   Widget build(BuildContext context) {
     return Sizer(

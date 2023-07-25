@@ -77,6 +77,12 @@ class _MoviesPageState extends State<MoviesPage> {
                     return MoviesScrollview(
                         isLoading: false,
                         hasMore: true,
+                        onMoreClick: () {
+                          final args =
+                              MoreMoviesArgs('Top Rated', state.movieList);
+                          Navigator.pushNamed(context, pages.moreMoviesPage,
+                              arguments: args);
+                        },
                         onMovieClick: onMovieClick,
                         movieList: state.movieList,
                         moviesType: "Top Rated");
@@ -84,6 +90,7 @@ class _MoviesPageState extends State<MoviesPage> {
                     return MoviesScrollview(
                         isLoading: true,
                         hasMore: true,
+                        onMoreClick: () {},
                         onMovieClick: () {},
                         movieList: const [],
                         moviesType: "Top Rated");
@@ -102,6 +109,12 @@ class _MoviesPageState extends State<MoviesPage> {
                     return MoviesScrollview(
                         isLoading: false,
                         hasMore: true,
+                        onMoreClick: () {
+                          final args =
+                              MoreMoviesArgs('Upcoming', state.movieList);
+                          Navigator.pushNamed(context, pages.moreMoviesPage,
+                              arguments: args);
+                        },
                         onMovieClick: onMovieClick,
                         movieList: state.movieList,
                         moviesType: "Upcoming");
@@ -109,6 +122,7 @@ class _MoviesPageState extends State<MoviesPage> {
                     return MoviesScrollview(
                         isLoading: true,
                         hasMore: true,
+                        onMoreClick: () {},
                         onMovieClick: () {},
                         movieList: const [],
                         moviesType: "Upcoming");
@@ -127,6 +141,12 @@ class _MoviesPageState extends State<MoviesPage> {
                     return MoviesScrollview(
                         isLoading: false,
                         hasMore: true,
+                        onMoreClick: () {
+                          final args =
+                              MoreMoviesArgs('Arabic', state.movieList);
+                          Navigator.pushNamed(context, pages.moreMoviesPage,
+                              arguments: args);
+                        },
                         onMovieClick: onMovieClick,
                         movieList: state.movieList,
                         moviesType: "Arabic");
@@ -134,6 +154,7 @@ class _MoviesPageState extends State<MoviesPage> {
                     return MoviesScrollview(
                         isLoading: true,
                         hasMore: true,
+                        onMoreClick: () {},
                         onMovieClick: () {},
                         movieList: const [],
                         moviesType: "Arabic");

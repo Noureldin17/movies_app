@@ -16,6 +16,7 @@ class TMDBApiConstants {
   static const ARABIC_MOVIES_ENDPOINT =
       "discover/movie?include_adult=false&include_video=false&language=en-US&sort_by=popularity.desc&with_origin_country=EG&with_original_language=ar&";
   // static const TRENDING_MOVIES_ENDPOINT = "trending/movie/day";
+  // ignore: constant_identifier_names
   static const MOVIE_GENRES = {
     12: "Adventure",
     28: "Action",
@@ -38,6 +39,7 @@ class TMDBApiConstants {
     37: "Western"
   };
 
+  // ignore: constant_identifier_names
   static const MOVIE_LANGUAGES = {
     'ar': 'Arabic',
     'en': 'English',

@@ -2,6 +2,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
+import 'package:movies_app/features/movies/domain/usecases/get_account_states_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_credits_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_details_usecase.dart';
 import 'package:movies_app/features/movies/domain/usecases/get_movies_usecase.dart';
@@ -9,6 +10,7 @@ import 'package:movies_app/features/movies/domain/usecases/get_recommendations_u
 import 'package:movies_app/features/movies/domain/usecases/get_trailer_usecase.dart';
 
 import '../../../../core/error/failures.dart';
+import '../../domain/models/account_states_model.dart';
 import '../../domain/models/movie_credits_model.dart';
 import '../../domain/models/movie_model.dart';
 import '../../domain/models/movie_videos_model.dart';
@@ -23,12 +25,14 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   final GetTrailerUseCase getTrailerUseCase;
   final GetMovieDetailsUseCase getMovieDetailsUseCase;
   final GetRecommendationsUseCase getRecommendationsUseCase;
+  final GetAccountStatesUsecase getAccountStatesUsecase;
 
   MoviesBloc(
       {required this.getCreditsUseCase,
       required this.getMoviesUseCase,
       required this.getTrailerUseCase,
       required this.getRecommendationsUseCase,
+      required this.getAccountStatesUsecase,
       required this.getMovieDetailsUseCase})
       : super(MoviesInitial()) {
     on<MoviesEvent>(transformer: sequential(), (event, emit) async {
@@ -50,6 +54,8 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         await _getRecommendationsHandler(event, emit);
       } else if (event is GetMoreMoviesEvent) {
         await _getMoreMoviesHandler(event, emit);
+      } else if (event is GetAccountStatesEvent) {
+        await _getAccountStatesHandler(event, emit);
       }
     });
   }
@@ -66,6 +72,13 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     final response = await getRecommendationsUseCase.call(event.movieId);
     response.fold((l) => emit(RecommendationsError(_mapErrorToMessage(l))),
         (r) => emit(RecommendationsSuccess(r)));
+  }
+
+  Future<void> _getAccountStatesHandler(event, emit) async {
+    emit(AccountStatesLoading());
+    final response = await getAccountStatesUsecase.call(event.movieId);
+    response.fold((l) => emit(AccountStatesError(_mapErrorToMessage(l))),
+        (r) => emit(AccountStatesSuccess(r)));
   }
 
   Future<void> _getDetailsHandler(event, emit) async {

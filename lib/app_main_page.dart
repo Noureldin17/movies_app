@@ -11,8 +11,7 @@ import 'package:lazy_load_indexed_stack/lazy_load_indexed_stack.dart';
 // import 'package:movies_app/utils/default_text.dart';
 // import 'utils/pages.dart' as pages;
 import 'package:movies_app/features/movies/presentation/pages/movies_page.dart';
-import 'package:movies_app/features/movies/presentation/pages/test2_page.dart';
-import 'package:movies_app/features/movies/presentation/pages/test_page.dart';
+import 'features/movies/presentation/pages/watchlist_page.dart';
 import 'utils/colors.dart' as colors;
 
 class AppMainPage extends StatefulWidget {
@@ -25,53 +24,16 @@ class AppMainPage extends StatefulWidget {
 class _AppMainPageState extends State<AppMainPage> {
   final body = [
     const MoviesPage(),
-    const TestPage(),
-    const Test2Page(),
-    const Test2Page()
+    const WatchListPage(),
+    const WatchListPage(),
+    const WatchListPage(),
   ];
   int currentIndex = 0;
+
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   actions: [
-        //     Padding(padding: EdgeInsets.only(left: 10.sp)),
-        //     ShaderMask(
-        //         shaderCallback: (bounds) => const LinearGradient(
-        //                 colors: [colors.primaryBlue, colors.primaryPurple])
-        //             .createShader(bounds),
-        //         child: Image.asset(
-        //           'assets/logo/cinema.png',
-        //           width: 30.sp,
-        //           height: 30.sp,
-        //           color: colors.primaryPurple,
-        //         )),
-        //     Center(
-        //       child: RichText(
-        //           textAlign: TextAlign.center,
-        //           text: TextSpan(children: [
-        //             TextSpan(
-        //               text: "Movie",
-        //               style: GoogleFonts.righteous(
-        //                 color: Colors.white,
-        //                 fontSize: 16.sp,
-        //                 fontWeight: FontWeight.w200,
-        //               ),
-        //             ),
-        //             TextSpan(
-        //               text: "Magic",
-        //               style: GoogleFonts.righteous(
-        //                 color: Colors.white,
-        //                 fontSize: 16.sp,
-        //                 fontWeight: FontWeight.bold,
-        //               ),
-        //             )
-        //           ])),
-        //     ),
-        //     Spacer()
-        //   ],
-        //   backgroundColor: colors.primaryDark,
-        // ),
         backgroundColor: colors.primaryDark,
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -146,9 +108,21 @@ class _AppMainPageState extends State<AppMainPage> {
                         color: Colors.white))),
           ],
         ),
-        body: LazyLoadIndexedStack(
-          index: currentIndex,
-          children: body,
+        body: WillPopScope(
+          onWillPop: () async {
+            if (currentIndex == 0) {
+              return true;
+            } else {
+              setState(() {
+                currentIndex = 0;
+              });
+              return false;
+            }
+          },
+          child: LazyLoadIndexedStack(
+            index: currentIndex,
+            children: body,
+          ),
         ));
   }
 }

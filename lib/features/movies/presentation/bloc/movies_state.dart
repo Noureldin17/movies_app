@@ -17,6 +17,8 @@ class TrailerLoading extends MoviesState {}
 
 class DetailsLoading extends MoviesState {}
 
+class AccountStatesLoading extends MoviesState {}
+
 class CreditsLoading extends MoviesState {}
 
 class TrailerError extends MoviesState {
@@ -35,6 +37,12 @@ class DetailsError extends MoviesState {
   final String message;
 
   const DetailsError(this.message);
+}
+
+class AccountStatesError extends MoviesState {
+  final String message;
+
+  const AccountStatesError(this.message);
 }
 
 class TopRatedLoading extends MoviesState {}
@@ -61,6 +69,12 @@ class DetailsSuccess extends MoviesState {
   final MovieDetails movieDetails;
 
   const DetailsSuccess(this.movieDetails);
+}
+
+class AccountStatesSuccess extends MoviesState {
+  final AccountStates accountStates;
+
+  const AccountStatesSuccess(this.accountStates);
 }
 
 class MoviesSuccess extends MoviesState {

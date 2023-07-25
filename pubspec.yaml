@@ -39,23 +39,24 @@ dependencies:
   flutter_svg: ^1.1.6
   flutter_loadingindicator: ^1.0.1
   carousel_slider: ^4.2.1
+  sqflite: ^2.2.8+4
   equatable: ^2.0.5
-  video_player: ^2.5.3  
   youtube_player_flutter: ^8.1.2
   pod_player: ^0.2.0
-  chewie: ^1.7.0
   fluttertoast: ^8.2.2
+  awesome_snackbar_content: ^0.1.0
   flutter_rating_bar: ^4.0.1
   http: ^0.13.5
   get_it: ^7.6.0
   skeletons: ^0.0.3
   bloc_concurrency: ^0.2.2
-  # photo_view: ^0.14.0
   flutter_custom_clippers: ^2.1.0
   internet_connection_checker: ^1.0.0+1
   dartz: ^0.10.1
-  sensors_plus: ^3.0.2
-  sqflite: ^2.2.8+4
+  # chewie: ^1.7.0
+  # video_player: ^2.5.3  
+  # sensors_plus: ^3.0.2
+  # sqflite: ^2.2.8+4
   cached_network_image: ^3.2.3
   shared_preferences: ^2.1.2
   lazy_load_indexed_stack: ^0.1.4

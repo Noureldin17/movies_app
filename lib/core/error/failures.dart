@@ -49,3 +49,11 @@ class InvalidCredentialsFailure implements Failure {
   @override
   bool? get stringify => false;
 }
+
+class UnAuthorizedFailure implements Failure {
+  @override
+  List<Object?> get props => [];
+
+  @override
+  bool? get stringify => false;
+}

@@ -11,25 +11,29 @@ class BackdropImage extends StatefulWidget {
     super.key,
     required this.backdropPath,
     required this.sigma,
+    required this.cacheManager,
   });
   final String backdropPath;
   final double sigma;
+  final CacheManager cacheManager;
   @override
   State<BackdropImage> createState() => _BackdropImageState();
 }
 
 class _BackdropImageState extends State<BackdropImage> {
-  static final customCacheManager = CacheManager(Config('customKey',
-      stalePeriod: const Duration(hours: 5), maxNrOfCacheObjects: 100));
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      cacheManager: customCacheManager,
+      cacheManager: widget.cacheManager,
       fadeInDuration: const Duration(milliseconds: 300),
       fadeInCurve: Curves.easeIn,
       fadeOutCurve: Curves.easeOut,
       fadeOutDuration: const Duration(milliseconds: 300),
-      key: UniqueKey(),
       errorWidget: (context, url, error) => Container(
         height: 220.sp,
         width: 100.w,

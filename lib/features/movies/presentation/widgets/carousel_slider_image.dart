@@ -22,8 +22,14 @@ class CarouselSliderImage extends StatefulWidget {
 }
 
 class _CarouselSliderImageState extends State<CarouselSliderImage> {
-  static final customCacheManager = CacheManager(Config('customPosterKey',
-      stalePeriod: const Duration(hours: 5), maxNrOfCacheObjects: 100));
+  late CacheManager customCacheManager;
+  @override
+  void initState() {
+    customCacheManager = CacheManager(Config('customPosterKey',
+        stalePeriod: const Duration(hours: 5), maxNrOfCacheObjects: 100));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -34,7 +40,6 @@ class _CarouselSliderImageState extends State<CarouselSliderImage> {
         transitionOnUserGestures: true,
         tag: '${widget.posterPath}Discover',
         child: CachedNetworkImage(
-          key: UniqueKey(),
           imageUrl: "${TMDBApiConstants.IMAGE_BASE_URL}${widget.posterPath}",
           cacheManager: customCacheManager,
           imageBuilder: (context, imageProvider) => Container(
