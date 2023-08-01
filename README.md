@@ -1,5 +1,5 @@
 # Movies App
-This app is a movie browsing app built using Flutter.
+This app is a movie browsing app built using Flutter. The UI of this app is inspired by different designs (mainly: https://www.behance.net/gallery/171660715/Movie-Mobile-Application)
 
 
 <hr>
