@@ -37,8 +37,8 @@ Some of the Important Concepts applied in this app were:
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/1e02c69a-dd20-4017-9377-a25bb0b984a3 width=150 height=300>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/d58d8148-bb37-4236-aee4-9879ccee3bf9 width=150 height=300>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/ea7a3782-8496-4b11-a206-fec3658101ef width=150 height=300>
+<img src=https://github.com/Noureldin17/movies_app/assets/90275962/86620b48-5cd7-40f7-8ae5-8c677f204aaf width=150 height=300>
 
-<img src=https://github.com/Noureldin17/movies_app/assets/90275962/81de31c7-d683-4963-9a94-364098ebaf23 width=150 height=300>
 <br/>
 <br/>
 <br/>
@@ -52,7 +52,7 @@ Some of the Important Concepts applied in this app were:
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/02d6b104-a02b-423b-8096-e03dd0eb5ac2 width=150 height=300>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/64f0e8ec-c91d-4b21-aec8-1041af9f7dda width=150 height=300>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/ac2bf2e9-c755-4908-91b1-b1ee99e03db6 width=150 height=300>
-<img src=https://github.com/Noureldin17/movies_app/assets/90275962/86620b48-5cd7-40f7-8ae5-8c677f204aaf width=150 height=300>
+<img src=https://github.com/Noureldin17/movies_app/assets/90275962/81de31c7-d683-4963-9a94-364098ebaf23 width=150 height=300>
 <br/>
 <br/>
 <br/>
