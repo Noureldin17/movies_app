@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lazy_load_indexed_stack/lazy_load_indexed_stack.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:lazy_load_indexed_stack/lazy_load_indexed_stack.dart';
 // import 'package:movies_app/utils/default_text.dart';
 // import 'utils/pages.dart' as pages;
 import 'package:movies_app/features/movies/presentation/pages/movies_page.dart';
+import 'package:movies_app/features/authentication/presentation/pages/profile_page.dart';
 import 'features/movies/presentation/pages/watchlist_page.dart';
 import 'utils/colors.dart' as colors;
 
@@ -24,13 +26,13 @@ class AppMainPage extends StatefulWidget {
 class _AppMainPageState extends State<AppMainPage> {
   final body = [
     const MoviesPage(),
+    // const WatchListPage(),
     const WatchListPage(),
-    const WatchListPage(),
-    const WatchListPage(),
+    const ProfilePage(),
   ];
   int currentIndex = 0;
+  int popScope = 0;
 
-  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,20 +66,20 @@ class _AppMainPageState extends State<AppMainPage> {
                         .createShader(bounds),
                     child: SvgPicture.asset('assets/navbar_icons/video.svg',
                         color: Colors.white))),
-            BottomNavigationBarItem(
-                label: 'search',
-                backgroundColor: colors.primaryDark,
-                icon: SvgPicture.asset('assets/navbar_icons/search.svg',
-                    color: Colors.white),
-                activeIcon: ShaderMask(
-                    shaderCallback: (bounds) => const LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [colors.primaryBlue, colors.primaryPurple])
-                        .createShader(bounds),
-                    child: SvgPicture.asset(
-                        'assets/navbar_icons/search-active.svg',
-                        color: Colors.white))),
+            // BottomNavigationBarItem(
+            //     label: 'search',
+            //     backgroundColor: colors.primaryDark,
+            //     icon: SvgPicture.asset('assets/navbar_icons/search.svg',
+            //         color: Colors.white),
+            //     activeIcon: ShaderMask(
+            //         shaderCallback: (bounds) => const LinearGradient(
+            //                 begin: Alignment.topLeft,
+            //                 end: Alignment.bottomRight,
+            //                 colors: [colors.primaryBlue, colors.primaryPurple])
+            //             .createShader(bounds),
+            //         child: SvgPicture.asset(
+            //             'assets/navbar_icons/search-active.svg',
+            //             color: Colors.white))),
             BottomNavigationBarItem(
                 label: 'watchlist',
                 backgroundColor: colors.primaryDark,
@@ -111,10 +113,20 @@ class _AppMainPageState extends State<AppMainPage> {
         body: WillPopScope(
           onWillPop: () async {
             if (currentIndex == 0) {
-              return true;
+              if (popScope == 0) {
+                setState(() {
+                  popScope = 1;
+                });
+                Fluttertoast.showToast(msg: "Press back again to exit app");
+                return false;
+              } else if (popScope == 1) {
+                return true;
+              }
+              return false;
             } else {
               setState(() {
                 currentIndex = 0;
+                popScope = 0;
               });
               return false;
             }

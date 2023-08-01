@@ -4,8 +4,12 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:movies_app/core/error/failures.dart';
 import 'package:movies_app/features/authentication/domain/models/login_request_params.dart';
+import 'package:movies_app/features/authentication/domain/models/tmdb_user_model.dart';
+import 'package:movies_app/features/authentication/domain/usecases/add_rating_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/add_to_watchlist_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/check_onboard_usecase.dart';
+import 'package:movies_app/features/authentication/domain/usecases/delete_rating_usecase.dart';
+import 'package:movies_app/features/authentication/domain/usecases/get_user_details_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/get_watchlist_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/guest_login_usecase.dart';
 import 'package:movies_app/features/authentication/domain/usecases/login_usecase.dart';
@@ -26,20 +30,26 @@ class AuthenticationBloc
   final CheckOnBoardUseCase checkOnBoardUseCase;
   final GetWatchListUsecase getWatchListUsecase;
   final AddToWatchListUsecase addToWatchListUsecase;
+  final AddRatingUsecase addRatingUsecase;
+  final DeleteRatingUsecase deleteRatingUsecase;
+  final GetUserDetailsUsecase getUserDetailsUsecase;
   AuthenticationBloc(
       {required this.loginUseCase,
       required this.guestLoginUseCase,
       required this.checkOnBoardUseCase,
+      required this.getUserDetailsUsecase,
       required this.onBoardUseCase,
       required this.addToWatchListUsecase,
       required this.getWatchListUsecase,
+      required this.addRatingUsecase,
+      required this.deleteRatingUsecase,
       required this.logoutUseCase})
       : super(AuthenticationInitial()) {
     on<AuthenticationEvent>(transformer: sequential(), (event, emit) async {
       if (event is LoginEvent) {
         emit(LoginLoadingState());
-        final response = await loginUseCase
-            .call(LoginRequestParams(event.username, event.password));
+        final response = await loginUseCase.call(LoginRequestParams(
+            event.username, event.password, event.keepMeSignedIn));
 
         response.fold((l) {
           emit(LoginErrorState(_mapErrorToMessage(l)));
@@ -62,10 +72,10 @@ class AuthenticationBloc
       } else if (event is OnBoardEvent) {
         // ignore: unused_local_variable
         final response = await onBoardUseCase.call();
-      } else if (event is CheckOnBoardEvent) {
+      } else if (event is CheckLoginStatesEvent) {
         final response = await checkOnBoardUseCase.call();
         response.fold((l) => null, (r) {
-          emit(OnBoardCheckedState(r));
+          emit(LoginStatesCheckedState(r.isOnboard, r.keepSignedIn));
         });
       } else if (event is GetWatchListEvent) {
         emit(WatchListLoading());
@@ -83,6 +93,20 @@ class AuthenticationBloc
             (r) {
           emit(AddToWatchListSuccess(event.value));
         });
+      } else if (event is AddRatingEvent) {
+        final response =
+            await addRatingUsecase.call(event.movieId, event.value);
+        response.fold((l) => emit(AddRatingError(_mapErrorToMessage(l))),
+            (r) => emit(AddRatingSuccess()));
+      } else if (event is DeleteRatingEvent) {
+        final response = await deleteRatingUsecase.call(event.movieId);
+        response.fold((l) => emit(DeleteRatingError(_mapErrorToMessage(l))),
+            (r) => emit(DeleteRatingSuccess()));
+      } else if (event is GetUserDetailsEvent) {
+        emit(UserDetailsLoading());
+        final response = await getUserDetailsUsecase.call();
+        response.fold((l) => emit(UserDetailsError(_mapErrorToMessage(l))),
+            (r) => emit(UserDetailsSuccess(r)));
       }
     });
   }

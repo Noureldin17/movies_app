@@ -9,8 +9,9 @@ abstract class AuthenticationEvent extends Equatable {
 
 class LoginEvent extends AuthenticationEvent {
   final String username, password;
+  final bool keepMeSignedIn;
 
-  const LoginEvent(this.username, this.password);
+  const LoginEvent(this.username, this.password, this.keepMeSignedIn);
 
   @override
   List<Object> get props => [username, password];
@@ -22,7 +23,11 @@ class LogoutEvent extends AuthenticationEvent {}
 
 class OnBoardEvent extends AuthenticationEvent {}
 
-class CheckOnBoardEvent extends AuthenticationEvent {}
+class CheckLoginStatesEvent extends AuthenticationEvent {}
+
+class CheckKeepSignedInEvent extends AuthenticationEvent {}
+
+class GetUserDetailsEvent extends AuthenticationEvent {}
 
 class AddToWatchListEvent extends AuthenticationEvent {
   final int movieId;
@@ -32,3 +37,16 @@ class AddToWatchListEvent extends AuthenticationEvent {
 }
 
 class GetWatchListEvent extends AuthenticationEvent {}
+
+class AddRatingEvent extends AuthenticationEvent {
+  final int movieId;
+  final num value;
+
+  const AddRatingEvent(this.movieId, this.value);
+}
+
+class DeleteRatingEvent extends AuthenticationEvent {
+  final int movieId;
+
+  const DeleteRatingEvent(this.movieId);
+}

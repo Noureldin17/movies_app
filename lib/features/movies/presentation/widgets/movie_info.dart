@@ -36,7 +36,7 @@ class _MovieInfoState extends State<MovieInfo> {
           current is AccountStatesLoading ||
           current is AccountStatesError,
       builder: (context, state) {
-        if (state is AccountStatesSuccess) {
+        if (state is AccountStatesSuccess || state is AccountStatesError) {
           return Column(
             children: [
               Padding(
@@ -119,12 +119,23 @@ class _MovieInfoState extends State<MovieInfo> {
                 ),
               ),
               Padding(padding: EdgeInsets.only(top: 6.sp)),
-              MovieAccountStates(
-                currentRatedState:
-                    state.accountStates.rated?.value == null ? false : true,
-                currentWatchlistState: state.accountStates.watchlist,
-                movieId: widget.movie.movieId,
-              ),
+              if (state is AccountStatesSuccess)
+                MovieAccountStates(
+                  currentRatedState:
+                      state.accountStates.rated?.value == null ? false : true,
+                  currentWatchlistState: state.accountStates.watchlist,
+                  movieId: widget.movie.movieId,
+                  initialRating: state.accountStates.rated?.value == null
+                      ? 0.0
+                      : state.accountStates.rated!.value!,
+                ),
+              if (state is AccountStatesError)
+                MovieAccountStates(
+                  currentRatedState: false,
+                  currentWatchlistState: false,
+                  movieId: widget.movie.movieId,
+                  initialRating: 0.0,
+                ),
               Padding(padding: EdgeInsets.only(top: 10.sp)),
               const GradientDivider(),
               MovieDescription(overview: widget.movieDetails.overview),

@@ -11,10 +11,10 @@ class Movie {
 
   Movie.fromJson(Map<String, dynamic> json) {
     adult = json['adult'];
-    backdropPath = json['backdrop_path'] ?? ' ';
+    backdropPath = json['backdrop_path'] ?? '';
     genreIds = json['genre_ids'].cast<int>();
     movieId = json['id'];
-    posterPath = json['poster_path'] ?? ' ';
+    posterPath = json['poster_path'] ?? '';
     try {
       releaseDate = DateTime.parse(json['release_date']).year.toString();
     } catch (_) {

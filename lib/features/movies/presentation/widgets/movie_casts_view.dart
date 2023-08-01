@@ -51,8 +51,9 @@ class _MovieCastsViewState extends State<MovieCastsView> {
                       children: [
                         CachedNetworkImage(
                           cacheManager: widget.cacheManager,
-                          imageUrl:
-                              '${TMDBApiConstants.IMAGE_BASE_URL}${member.profilePath}',
+                          imageUrl: member.profilePath != ''
+                              ? '${TMDBApiConstants.IMAGE_BASE_URL}${member.profilePath}'
+                              : "${TMDBApiConstants.IMAGE_BASE_URL}/yF1eOkaYvwiORauRCPWznV9xVvi.jpg",
                           imageBuilder: (context, imageProvider) => Container(
                             padding: EdgeInsets.all(1.sp),
                             decoration: const BoxDecoration(

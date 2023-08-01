@@ -60,6 +60,16 @@ class MovieListTile extends StatelessWidget {
                           image: imageProvider,
                         ),
                       )),
+                  errorWidget: (context, url, error) => Container(
+                      height: 90.sp,
+                      width: 65.sp,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [colors.shimmerBase, colors.shimmerLoad]),
+                        borderRadius: BorderRadius.circular(12.sp),
+                      )),
                   placeholder: (context, url) => Container(
                       height: 90.sp,
                       width: 65.sp,

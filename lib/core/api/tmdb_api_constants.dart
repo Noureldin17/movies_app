@@ -1,7 +1,8 @@
 class TMDBApiConstants {
   TMDBApiConstants._();
+  // static const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
   // ignore: constant_identifier_names
-  static const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original/";
+  static const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
   // ignore: constant_identifier_names
   static const BASE_URL = "https://api.themoviedb.org/3/";
   // ignore: constant_identifier_names

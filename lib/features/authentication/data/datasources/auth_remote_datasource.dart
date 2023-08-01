@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 // import 'package:http/http.dart';
 import 'package:movies_app/core/api/tmdb_api_constants.dart';
 import 'package:movies_app/core/error/exceptions.dart';
+import 'package:movies_app/features/authentication/domain/models/tmdb_user_model.dart';
 import 'package:movies_app/features/movies/domain/models/movie_model.dart';
 import '../../domain/models/request_token_model.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +14,11 @@ abstract class AuthenticationRemoteDataSource {
   Future<String> createSession(Map<String, dynamic> body);
   Future<String> createGuestSession();
   Future<Unit> deleteSession(String sessionId);
+  Future<TMDBUser> getUserDetails(String sessionId);
   Future<Unit> addToWatchList(int movieId, bool value, String accountId);
+  Future<Unit> addRating(
+      int movieId, num value, String accountId, String sessionType);
+  Future<Unit> deleteRating(int movieId, String accountId, String sessionType);
   Future<List<Movie>> getWatchList(String accountId);
 }
 
@@ -96,7 +101,6 @@ class AuthenticationRemoteImplWithHttp
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'session_id': sessionId}));
 
-    // print(response.body);
     if (response.statusCode == 200) {
       return unit;
     } else if (response.statusCode == 401) {
@@ -114,6 +118,7 @@ class AuthenticationRemoteImplWithHttp
         headers: {'Content-Type': 'application/json'},
         body: json.encode(
             {'media_type': 'movie', "media_id": movieId, "watchlist": value}));
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       return unit;
     } else if (response.statusCode == 401) {
@@ -135,6 +140,57 @@ class AuthenticationRemoteImplWithHttp
       List<Movie> movieList =
           decodedJson.map((json) => Movie.fromJson(json)).toList();
       return movieList;
+    } else if (response.statusCode == 401) {
+      throw UnAuthorizedException();
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<Unit> addRating(
+      int movieId, num value, String accountId, String sessionType) async {
+    final response = await client.post(
+        Uri.parse(
+            '${TMDBApiConstants.BASE_URL}movie/$movieId/rating?api_key=${TMDBApiConstants.API_KEY}&$sessionType=$accountId'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({'value': value}));
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return unit;
+    } else if (response.statusCode == 401) {
+      throw UnAuthorizedException();
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<Unit> deleteRating(
+      int movieId, String accountId, String sessionType) async {
+    final response = await client.delete(
+      Uri.parse(
+          '${TMDBApiConstants.BASE_URL}movie/$movieId/rating?api_key=${TMDBApiConstants.API_KEY}&$sessionType=$accountId'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return unit;
+    } else if (response.statusCode == 401) {
+      throw UnAuthorizedException();
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<TMDBUser> getUserDetails(String sessionId) async {
+    final response = await client.get(
+        Uri.parse(
+            '${TMDBApiConstants.BASE_URL}account/$sessionId?api_key=${TMDBApiConstants.API_KEY}&session_id=$sessionId'),
+        headers: {'Content-Type': 'application/json'});
+    if (response.statusCode == 200) {
+      final decodedJson = json.decode(response.body);
+      final tmdbUser = TMDBUser.fromJson(decodedJson);
+      return tmdbUser;
     } else if (response.statusCode == 401) {
       throw UnAuthorizedException();
     } else {

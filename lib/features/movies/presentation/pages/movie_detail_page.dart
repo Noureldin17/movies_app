@@ -17,6 +17,7 @@ import '../../domain/models/movie_detail_args_model.dart';
 class MovieDetailPage extends StatefulWidget {
   const MovieDetailPage({super.key, required this.movieDetailArgs});
   final MovieDetailArgs movieDetailArgs;
+
   @override
   State<MovieDetailPage> createState() => _MovieDetailPageState();
 }
@@ -25,17 +26,24 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   bool isButtonVisible = true;
   bool isVideoVisible = true;
   late CacheManager customCacheManager;
-
   @override
-  void deactivate() async {
-    await customCacheManager.emptyCache();
-    super.deactivate();
+  void dispose() {
+    Future.delayed(
+      Duration.zero,
+      () async {
+        await customCacheManager.emptyCache();
+        await customCacheManager.dispose();
+      },
+    );
+    super.dispose();
   }
 
   @override
   void initState() {
-    customCacheManager = CacheManager(Config('castCacheKey',
-        stalePeriod: const Duration(minutes: 10), maxNrOfCacheObjects: 100));
+    customCacheManager = CacheManager(Config(
+        'castCacheKey${UniqueKey().toString()}',
+        stalePeriod: const Duration(minutes: 10),
+        maxNrOfCacheObjects: 100));
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);

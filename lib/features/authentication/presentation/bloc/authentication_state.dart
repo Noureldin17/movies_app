@@ -38,10 +38,17 @@ class GuestLoginErrorState extends AuthenticationState {
   const GuestLoginErrorState(this.message);
 }
 
-class OnBoardCheckedState extends AuthenticationState {
+class LoginStatesCheckedState extends AuthenticationState {
   final bool isOnBoard;
+  final bool keepSignedIn;
 
-  const OnBoardCheckedState(this.isOnBoard);
+  const LoginStatesCheckedState(this.isOnBoard, this.keepSignedIn);
+}
+
+class KeepSignedInCheckedState extends AuthenticationState {
+  final bool keepSignedIn;
+
+  const KeepSignedInCheckedState(this.keepSignedIn);
 }
 
 class WatchListSuccess extends AuthenticationState {
@@ -71,3 +78,33 @@ class AddToWatchListError extends AuthenticationState {
 }
 
 class AddToWatchListLoading extends AuthenticationState {}
+
+class AddRatingSuccess extends AuthenticationState {}
+
+class AddRatingError extends AuthenticationState {
+  final String message;
+
+  const AddRatingError(this.message);
+}
+
+class DeleteRatingError extends AuthenticationState {
+  final String message;
+
+  const DeleteRatingError(this.message);
+}
+
+class DeleteRatingSuccess extends AuthenticationState {}
+
+class UserDetailsSuccess extends AuthenticationState {
+  final TMDBUser user;
+
+  const UserDetailsSuccess(this.user);
+}
+
+class UserDetailsLoading extends AuthenticationState {}
+
+class UserDetailsError extends AuthenticationState {
+  final String message;
+
+  const UserDetailsError(this.message);
+}

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movies_app/features/movies/domain/models/more_movies_args_model.dart';
 import 'package:movies_app/features/movies/domain/models/movie_detail_args_model.dart';
 import 'package:movies_app/features/movies/presentation/widgets/movies_carousel_slider.dart';
 import 'package:movies_app/features/movies/presentation/widgets/movies_scrollview.dart';
+import 'package:movies_app/features/search/presentation/widgets/search_bar.dart';
+import 'package:movies_app/utils/default_text.dart';
+import 'package:sizer/sizer.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 import '../../../../utils/colors.dart' as colors;
 import '../../../../utils/pages.dart' as pages;
 import '../bloc/movies_bloc.dart';
@@ -18,6 +24,9 @@ class MoviesPage extends StatefulWidget {
 class _MoviesPageState extends State<MoviesPage> {
   @override
   void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     BlocProvider.of<MoviesBloc>(context)
         .add(const GetMoviesEvent("Discover", 1));
     BlocProvider.of<MoviesBloc>(context)
@@ -59,7 +68,9 @@ class _MoviesPageState extends State<MoviesPage> {
                       },
                     );
                   } else if (state is MoviesLoading) {
-                    return Container();
+                    return Container(
+                      height: 274.sp,
+                    );
                   } else if (state is MoviesError) {
                     return Container();
                   } else {
@@ -67,102 +78,151 @@ class _MoviesPageState extends State<MoviesPage> {
                   }
                 },
               ),
-              BlocBuilder<MoviesBloc, MoviesState>(
-                buildWhen: (previous, current) => (current is TopRatedSuccess ||
-                    current is TopRatedLoading ||
-                    current is TopRatedError),
-                key: UniqueKey(),
-                builder: (context, state) {
-                  if (state is TopRatedSuccess) {
-                    return MoviesScrollview(
-                        isLoading: false,
-                        hasMore: true,
-                        onMoreClick: () {
-                          final args =
-                              MoreMoviesArgs('Top Rated', state.movieList);
-                          Navigator.pushNamed(context, pages.moreMoviesPage,
-                              arguments: args);
+              StickyHeader(
+                  header: Container(
+                    padding: EdgeInsets.only(top: 12.sp, bottom: 12.sp),
+                    color: colors.primaryDark,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: 12.sp, top: 12.sp, right: 12.sp),
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const DefaultText.bold(
+                                  text: "Find Movies", fontSize: 22),
+                              Padding(padding: EdgeInsets.only(top: 4.sp)),
+                              Text(
+                                'Search your favorite movies, actors, and more...',
+                                style: GoogleFonts.roboto(
+                                    color: colors.primaryGrey,
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Padding(padding: EdgeInsets.only(top: 12.sp)),
+                              Hero(
+                                  tag: "SearchBar",
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, pages.searchPage);
+                                    },
+                                    child: CustomSearchBar(
+                                      enabled: false,
+                                      onSearch: () {},
+                                    ),
+                                  )),
+                            ],
+                          )),
+                    ),
+                  ),
+                  content: Column(
+                    children: [
+                      BlocBuilder<MoviesBloc, MoviesState>(
+                        buildWhen: (previous, current) =>
+                            (current is TopRatedSuccess ||
+                                current is TopRatedLoading ||
+                                current is TopRatedError),
+                        key: UniqueKey(),
+                        builder: (context, state) {
+                          if (state is TopRatedSuccess) {
+                            return MoviesScrollview(
+                                isLoading: false,
+                                hasMore: true,
+                                onMoreClick: () {
+                                  final args = MoreMoviesArgs(
+                                      'Top Rated', state.movieList);
+                                  Navigator.pushNamed(
+                                      context, pages.moreMoviesPage,
+                                      arguments: args);
+                                },
+                                onMovieClick: onMovieClick,
+                                movieList: state.movieList,
+                                moviesType: "Top Rated");
+                          } else if (state is TopRatedLoading) {
+                            return MoviesScrollview(
+                                isLoading: true,
+                                hasMore: true,
+                                onMoreClick: () {},
+                                onMovieClick: () {},
+                                movieList: const [],
+                                moviesType: "Top Rated");
+                          } else {
+                            return Container();
+                          }
                         },
-                        onMovieClick: onMovieClick,
-                        movieList: state.movieList,
-                        moviesType: "Top Rated");
-                  } else if (state is TopRatedLoading) {
-                    return MoviesScrollview(
-                        isLoading: true,
-                        hasMore: true,
-                        onMoreClick: () {},
-                        onMovieClick: () {},
-                        movieList: const [],
-                        moviesType: "Top Rated");
-                  } else {
-                    return const SizedBox();
-                  }
-                },
-              ),
-              BlocBuilder<MoviesBloc, MoviesState>(
-                buildWhen: (previous, current) => (current is UpcomingSuccess ||
-                    current is UpcomingLoading ||
-                    current is UpcomingError),
-                key: UniqueKey(),
-                builder: (context, state) {
-                  if (state is UpcomingSuccess) {
-                    return MoviesScrollview(
-                        isLoading: false,
-                        hasMore: true,
-                        onMoreClick: () {
-                          final args =
-                              MoreMoviesArgs('Upcoming', state.movieList);
-                          Navigator.pushNamed(context, pages.moreMoviesPage,
-                              arguments: args);
+                      ),
+                      BlocBuilder<MoviesBloc, MoviesState>(
+                        buildWhen: (previous, current) =>
+                            (current is UpcomingSuccess ||
+                                current is UpcomingLoading ||
+                                current is UpcomingError),
+                        key: UniqueKey(),
+                        builder: (context, state) {
+                          if (state is UpcomingSuccess) {
+                            return MoviesScrollview(
+                                isLoading: false,
+                                hasMore: true,
+                                onMoreClick: () {
+                                  final args = MoreMoviesArgs(
+                                      'Upcoming', state.movieList);
+                                  Navigator.pushNamed(
+                                      context, pages.moreMoviesPage,
+                                      arguments: args);
+                                },
+                                onMovieClick: onMovieClick,
+                                movieList: state.movieList,
+                                moviesType: "Upcoming");
+                          } else if (state is UpcomingLoading) {
+                            return MoviesScrollview(
+                                isLoading: true,
+                                hasMore: true,
+                                onMoreClick: () {},
+                                onMovieClick: () {},
+                                movieList: const [],
+                                moviesType: "Upcoming");
+                          } else {
+                            return Container();
+                          }
                         },
-                        onMovieClick: onMovieClick,
-                        movieList: state.movieList,
-                        moviesType: "Upcoming");
-                  } else if (state is UpcomingLoading) {
-                    return MoviesScrollview(
-                        isLoading: true,
-                        hasMore: true,
-                        onMoreClick: () {},
-                        onMovieClick: () {},
-                        movieList: const [],
-                        moviesType: "Upcoming");
-                  } else {
-                    return const SizedBox();
-                  }
-                },
-              ),
-              BlocBuilder<MoviesBloc, MoviesState>(
-                buildWhen: (previous, current) => (current is ArabicSuccess ||
-                    current is ArabicLoading ||
-                    current is ArabicError),
-                key: UniqueKey(),
-                builder: (context, state) {
-                  if (state is ArabicSuccess) {
-                    return MoviesScrollview(
-                        isLoading: false,
-                        hasMore: true,
-                        onMoreClick: () {
-                          final args =
-                              MoreMoviesArgs('Arabic', state.movieList);
-                          Navigator.pushNamed(context, pages.moreMoviesPage,
-                              arguments: args);
+                      ),
+                      BlocBuilder<MoviesBloc, MoviesState>(
+                        buildWhen: (previous, current) =>
+                            (current is ArabicSuccess ||
+                                current is ArabicLoading ||
+                                current is ArabicError),
+                        key: UniqueKey(),
+                        builder: (context, state) {
+                          if (state is ArabicSuccess) {
+                            return MoviesScrollview(
+                                isLoading: false,
+                                hasMore: true,
+                                onMoreClick: () {
+                                  final args =
+                                      MoreMoviesArgs('Arabic', state.movieList);
+                                  Navigator.pushNamed(
+                                      context, pages.moreMoviesPage,
+                                      arguments: args);
+                                },
+                                onMovieClick: onMovieClick,
+                                movieList: state.movieList,
+                                moviesType: "Arabic");
+                          } else if (state is ArabicLoading) {
+                            return MoviesScrollview(
+                                isLoading: true,
+                                hasMore: true,
+                                onMoreClick: () {},
+                                onMovieClick: () {},
+                                movieList: const [],
+                                moviesType: "Arabic");
+                          } else {
+                            return Container();
+                          }
                         },
-                        onMovieClick: onMovieClick,
-                        movieList: state.movieList,
-                        moviesType: "Arabic");
-                  } else if (state is ArabicLoading) {
-                    return MoviesScrollview(
-                        isLoading: true,
-                        hasMore: true,
-                        onMoreClick: () {},
-                        onMovieClick: () {},
-                        movieList: const [],
-                        moviesType: "Arabic");
-                  } else {
-                    return const SizedBox();
-                  }
-                },
-              ),
+                      ),
+                    ],
+                  )),
             ],
           ),
         ),

@@ -18,7 +18,8 @@ abstract class MoviesRemoteDatasource {
 
   Future<MovieDetails> getMovieDetails(int movieId);
 
-  Future<AccountStates> getAccountStates(int movieId, String sessionId);
+  Future<AccountStates> getAccountStates(
+      int movieId, String sessionId, String sessionType);
 
   Future<List<Movie>> getMovieRecommendations(int movieId);
 }
@@ -57,7 +58,6 @@ class MoviesRemoteImplWithHttp implements MoviesRemoteDatasource {
         Uri.parse(
             "${TMDBApiConstants.BASE_URL}movie/$movieId/videos?api_key=${TMDBApiConstants.API_KEY}"),
         headers: {"Content-Type": "application/json"});
-    // print(response.body);
     if (response.statusCode == 200) {
       List decodedJson = json.decode(response.body)["results"];
       if (decodedJson.isNotEmpty) {
@@ -126,10 +126,11 @@ class MoviesRemoteImplWithHttp implements MoviesRemoteDatasource {
   }
 
   @override
-  Future<AccountStates> getAccountStates(int movieId, String sessionId) async {
+  Future<AccountStates> getAccountStates(
+      int movieId, String sessionId, String sessionType) async {
     final response = await client.get(
         Uri.parse(
-            "${TMDBApiConstants.BASE_URL}movie/$movieId/account_states?session_id=$sessionId&api_key=${TMDBApiConstants.API_KEY}"),
+            "${TMDBApiConstants.BASE_URL}movie/$movieId/account_states?$sessionType=$sessionId&api_key=${TMDBApiConstants.API_KEY}"),
         headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200) {
       final decodedJson = json.decode(response.body);

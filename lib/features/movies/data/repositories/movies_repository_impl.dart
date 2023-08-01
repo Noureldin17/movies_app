@@ -172,8 +172,8 @@ class MoviesRepoImpl implements MoviesRepository {
     if (await networkInfo.isConnected) {
       try {
         final sessionId = await localDatasource.getSessionId();
-        final response =
-            await remoteDatasource.getAccountStates(movieId, sessionId);
+        final response = await remoteDatasource.getAccountStates(
+            movieId, sessionId["value"], sessionId["key"]);
         return Right(response);
       } on ServerException {
         return Left(ServerFailure());

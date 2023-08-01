@@ -34,11 +34,25 @@ class MoviesScrollview extends StatefulWidget {
 
 class _MoviesScrollviewState extends State<MoviesScrollview> {
   late CacheManager customCacheManager;
-  final Key key = UniqueKey();
+  @override
+  void dispose() {
+    Future.delayed(
+      Duration.zero,
+      () async {
+        await customCacheManager.emptyCache().then((value) async {
+          await customCacheManager.dispose();
+        });
+      },
+    );
+    super.dispose();
+  }
+
   @override
   void initState() {
-    customCacheManager = CacheManager(Config('customPosterKey',
-        stalePeriod: const Duration(hours: 1), maxNrOfCacheObjects: 100));
+    customCacheManager = CacheManager(Config(
+        'customPosterKey${UniqueKey().toString()}',
+        stalePeriod: const Duration(hours: 1),
+        maxNrOfCacheObjects: 100));
     super.initState();
   }
 
@@ -99,114 +113,118 @@ class _MoviesScrollviewState extends State<MoviesScrollview> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    ...widget.movieList.map((movie) => Padding(
-                          padding: EdgeInsets.only(left: 12.sp),
-                          child: Column(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  final movieDetailArgs = MovieDetailArgs(
-                                    movie.posterPath +
-                                        widget.moviesType +
-                                        key.toString(),
-                                    movie,
-                                  );
-                                  widget.onMovieClick(movieDetailArgs);
-                                },
-                                child: Hero(
-                                  tag: movie.posterPath +
+                    ...widget.movieList.map((movie) {
+                      final posterKey = UniqueKey();
+
+                      return Padding(
+                        padding: EdgeInsets.only(left: 12.sp),
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                final movieDetailArgs = MovieDetailArgs(
+                                  movie.posterPath +
                                       widget.moviesType +
-                                      key.toString(),
-                                  child: CachedNetworkImage(
-                                    cacheManager: customCacheManager,
-                                    imageUrl:
-                                        "${TMDBApiConstants.IMAGE_BASE_URL}${movie.posterPath}",
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      width: 90.sp,
-                                      height: 125.sp,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12.sp),
-                                          image: DecorationImage(
-                                              image: imageProvider,
-                                              fit: BoxFit.fill)),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        Container(
-                                      decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                              colors: [
-                                                colors.shimmerBase,
-                                                colors.shimmerLoad
-                                              ]),
-                                          borderRadius:
-                                              BorderRadius.circular(12.sp)),
-                                      width: 90.sp,
-                                      height: 125.sp,
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                          'assets/icons/error.svg',
-                                          color: Colors.white,
-                                        ),
+                                      posterKey.toString(),
+                                  movie,
+                                );
+                                widget.onMovieClick(movieDetailArgs);
+                              },
+                              child: Hero(
+                                tag: movie.posterPath +
+                                    widget.moviesType +
+                                    posterKey.toString(),
+                                child: CachedNetworkImage(
+                                  cacheManager: customCacheManager,
+                                  imageUrl: movie.posterPath != ''
+                                      ? "${TMDBApiConstants.IMAGE_BASE_URL}${movie.posterPath}"
+                                      : "${TMDBApiConstants.IMAGE_BASE_URL}/yF1eOkaYvwiORauRCPWznV9xVvi.jpg",
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: 90.sp,
+                                    height: 125.sp,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(12.sp),
+                                        image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.fill)),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Container(
+                                    decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              colors.shimmerBase,
+                                              colors.shimmerLoad
+                                            ]),
+                                        borderRadius:
+                                            BorderRadius.circular(12.sp)),
+                                    width: 90.sp,
+                                    height: 125.sp,
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/icons/error.svg',
+                                        color: Colors.white,
                                       ),
                                     ),
-                                    placeholder: (context, url) => Container(
-                                      decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                              colors: [
-                                                colors.shimmerBase,
-                                                colors.shimmerLoad
-                                              ]),
-                                          borderRadius:
-                                              BorderRadius.circular(12.sp)),
-                                      width: 90.sp,
-                                      height: 125.sp,
-                                    ),
+                                  ),
+                                  placeholder: (context, url) => Container(
+                                    decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              colors.shimmerBase,
+                                              colors.shimmerLoad
+                                            ]),
+                                        borderRadius:
+                                            BorderRadius.circular(12.sp)),
+                                    width: 90.sp,
+                                    height: 125.sp,
                                   ),
                                 ),
                               ),
-                              Padding(padding: EdgeInsets.only(top: 5.sp)),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 90.sp,
-                                child: Text(
-                                  movie.movieTitle,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.roboto(
-                                      color: Colors.white,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                            ),
+                            Padding(padding: EdgeInsets.only(top: 5.sp)),
+                            Container(
+                              alignment: Alignment.center,
+                              width: 90.sp,
+                              child: Text(
+                                movie.movieTitle,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.roboto(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold),
                               ),
-                              Padding(padding: EdgeInsets.only(top: 5.sp)),
-                              Container(
-                                alignment: Alignment.center,
-                                width: 90.sp,
-                                child: Text(
-                                  movie.releaseDate,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.roboto(
-                                      color: colors.primaryGrey,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )
-                            ],
-                          ),
-                        )),
+                            ),
+                            Padding(padding: EdgeInsets.only(top: 5.sp)),
+                            Container(
+                              alignment: Alignment.center,
+                              width: 90.sp,
+                              child: Text(
+                                movie.releaseDate,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.roboto(
+                                    color: colors.primaryGrey,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    }),
                     Padding(padding: EdgeInsets.only(right: 12.sp))
                   ],
                 ),
               )
-            : MoviesScrollViewPlaceholder(
-                hasMore: widget.hasMore, moviesType: widget.moviesType),
+            : MoviesScrollViewPlaceholder(hasMore: widget.hasMore),
       ],
     );
   }

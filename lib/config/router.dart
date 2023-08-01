@@ -8,7 +8,8 @@ import 'package:movies_app/features/movies/domain/models/more_movies_args_model.
 import 'package:movies_app/features/movies/domain/models/movie_detail_args_model.dart';
 import 'package:movies_app/features/movies/presentation/pages/more_movies_page.dart';
 import 'package:movies_app/features/movies/presentation/pages/movie_detail_page.dart';
-import '../features/authentication/presentation/bloc/authentication_bloc.dart';
+import 'package:movies_app/features/search/presentation/bloc/search_bloc.dart';
+import 'package:movies_app/features/search/presentation/pages/search_page.dart';
 import '../features/movies/presentation/bloc/movies_bloc.dart';
 import '../utils/pages.dart' as pages;
 import '../core/dependency_injection/dependency_injection.dart' as di;
@@ -20,10 +21,7 @@ class AppRouter {
     switch (settings.name) {
       case pages.welcomePage:
         return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => di.sl<AuthenticationBloc>(),
-            child: const WelcomePage(),
-          ),
+          builder: (context) => const WelcomePage(),
         );
       case pages.onBoardingPage:
         return MaterialPageRoute(
@@ -31,10 +29,7 @@ class AppRouter {
         );
       case pages.loginPage:
         return MaterialPageRoute(
-          builder: (context) => BlocProvider(
-            create: (context) => di.sl<AuthenticationBloc>(),
-            child: const LoginPage(),
-          ),
+          builder: (context) => const LoginPage(),
         );
       case pages.appMainPage:
         return MaterialPageRoute(
@@ -65,6 +60,13 @@ class AppRouter {
             create: (context) => di.sl<MoviesBloc>(),
             child: MoreMoviesPage(
                 moreMoviesArgs: settings.arguments as MoreMoviesArgs),
+          ),
+        );
+      case pages.searchPage:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => di.sl<SearchBloc>(),
+            child: const SearchPage(),
           ),
         );
 

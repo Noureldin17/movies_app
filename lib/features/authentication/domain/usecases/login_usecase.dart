@@ -10,6 +10,7 @@ class LoginUseCase {
 
   Future<Either<Failure, Unit>> call(
       LoginRequestParams loginRequestParams) async {
-    return await authenticationRepo.loginUser(loginRequestParams.toJson());
+    return await authenticationRepo.loginUser(
+        loginRequestParams.toJson(), loginRequestParams.keepMeSignedIn);
   }
 }

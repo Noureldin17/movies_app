@@ -29,17 +29,10 @@ class MoviesCarouselSlider extends StatefulWidget {
 class _MoviesCarouselSliderState extends State<MoviesCarouselSlider>
     with WidgetsBindingObserver {
   late CacheManager customCacheManager;
-
+  final carousalController = CarouselController();
+  final key = UniqueKey();
   String backdropPath = '';
   bool animate = true;
-
-  @override
-  void deactivate() {
-    setState(() {
-      animate = false;
-    });
-    super.deactivate();
-  }
 
   @override
   void initState() {
@@ -49,22 +42,30 @@ class _MoviesCarouselSliderState extends State<MoviesCarouselSlider>
     super.initState();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      setState(() {
-        animate = false;
-      });
-    } else if (state == AppLifecycleState.resumed) {
-      setState(() {
-        animate = true;
-      });
-    } else if (state == AppLifecycleState.inactive) {
-      setState(() {
-        animate = false;
-      });
-    }
-  }
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.paused) {
+  //     Future.delayed(Duration.zero, () {
+  //       setState(() {
+  //         animate = false;
+  //         carousalController.stopAutoPlay();
+  //       });
+  //     });
+  //   } else if (state == AppLifecycleState.resumed) {
+  //     Future.delayed(Duration.zero, () {
+  //       setState(() {
+  //         animate = true;
+  //       });
+  //     });
+  //   } else if (state == AppLifecycleState.inactive) {
+  //     Future.delayed(Duration.zero, () {
+  //       setState(() {
+  //         animate = false;
+  //         carousalController.stopAutoPlay();
+  //       });
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +92,7 @@ class _MoviesCarouselSliderState extends State<MoviesCarouselSlider>
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const DefaultText.bold(text: 'Discover', fontSize: 22),
+                    const DefaultText.bold(text: 'Discover', fontSize: 20),
                     const Spacer(),
                     ElevatedButton(
                         onPressed: () {
@@ -128,6 +129,7 @@ class _MoviesCarouselSliderState extends State<MoviesCarouselSlider>
             ),
             Padding(padding: EdgeInsets.only(top: 20.sp)),
             CarouselSlider(
+                carouselController: carousalController,
                 items: [
                   ...widget.movieList.map((movie) => CarouselSliderImage(
                       onClick: () {
@@ -139,9 +141,11 @@ class _MoviesCarouselSliderState extends State<MoviesCarouselSlider>
                 ],
                 options: CarouselOptions(
                     onPageChanged: (index, reason) {
-                      setState(() {
-                        backdropPath =
-                            '${TMDBApiConstants.IMAGE_BASE_URL}${widget.movieList[index].backdropPath}';
+                      Future.delayed(Duration.zero, () {
+                        setState(() {
+                          backdropPath =
+                              '${TMDBApiConstants.IMAGE_BASE_URL}${widget.movieList[index].backdropPath}';
+                        });
                       });
                     },
                     enlargeCenterPage: true,

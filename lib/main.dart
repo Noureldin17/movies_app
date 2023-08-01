@@ -1,5 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_loadingindicator/flutter_loadingindicator.dart';
 import 'package:movies_app/config/router.dart';
@@ -15,6 +16,7 @@ import 'core/dependency_injection/dependency_injection.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await di.init();
   runApp(const MyApp());
 }
@@ -49,7 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
   AppRouter router = AppRouter();
   @override
   void initState() {
-    BlocProvider.of<AuthenticationBloc>(context).add(CheckOnBoardEvent());
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    BlocProvider.of<AuthenticationBloc>(context).add(CheckLoginStatesEvent());
     super.initState();
   }
 
@@ -57,14 +62,19 @@ class _MyHomePageState extends State<MyHomePage> {
     String nextRoute = pages.onBoardingPage;
     AuthenticationState state =
         BlocProvider.of<AuthenticationBloc>(context).state;
-    if (state is OnBoardCheckedState) {
-      OnBoardCheckedState onBoardCheckedState = state;
-      if (onBoardCheckedState.isOnBoard) {
-        nextRoute = pages.welcomePage;
+    if (state is LoginStatesCheckedState) {
+      LoginStatesCheckedState loginStatesCheckedState = state;
+      if (loginStatesCheckedState.isOnBoard) {
+        if (loginStatesCheckedState.keepSignedIn) {
+          nextRoute = pages.appMainPage;
+        } else {
+          nextRoute = pages.welcomePage;
+        }
       }
     } else {
       nextRoute = pages.onBoardingPage;
     }
+
     return nextRoute;
   }
 

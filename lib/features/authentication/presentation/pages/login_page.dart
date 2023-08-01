@@ -19,6 +19,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool checkboxValue = true;
   final formkey = GlobalKey<FormState>();
   final usernamekey = GlobalKey<FormFieldState>();
   final passwordkey = GlobalKey<FormFieldState>();
@@ -164,15 +165,33 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: EdgeInsets.only(top: 10.sp, right: 12.sp),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Container(
+                            child: Row(children: [
+                              Checkbox(
+                                side:
+                                    const BorderSide(color: colors.primaryGrey),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.sp)),
+                                value: checkboxValue,
+                                onChanged: (value) {
+                                  setState(() {
+                                    checkboxValue = value!;
+                                  });
+                                },
+                              ),
+                              const DefaultText.normal(
+                                  text: "Keep me signed in", fontSize: 10)
+                            ]),
+                          ),
                           InkWell(
                             onTap: () {},
                             child: Text(
                               "Forgot Password?",
                               style: GoogleFonts.roboto(
                                 color: colors.primaryGrey,
-                                fontSize: 12.sp,
+                                fontSize: 10.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -186,14 +205,15 @@ class _LoginPageState extends State<LoginPage> {
                           if (formkey.currentState!.validate()) {
                             BlocProvider.of<AuthenticationBloc>(context).add(
                                 LoginEvent(usernameController.text,
-                                    passwordController.text));
+                                    passwordController.text, checkboxValue));
                           }
                         },
                         buttonText: "Login"),
                     BlocListener<AuthenticationBloc, AuthenticationState>(
                       listener: (context, state) {
                         if (state is LoginSuccessState) {
-                          Navigator.pushNamed(context, pages.appMainPage);
+                          Navigator.pushReplacementNamed(
+                              context, pages.appMainPage);
                           EasyLoading.showSuccess('Login Success',
                               duration: const Duration(milliseconds: 700));
                         } else if (state is LoginLoadingState) {

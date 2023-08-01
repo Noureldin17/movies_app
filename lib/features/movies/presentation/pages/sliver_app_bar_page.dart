@@ -39,6 +39,18 @@ class _SliverAppBarPageState extends State<SliverAppBarPage>
   double posterHeight = 125.sp;
   double posterWidth = 90.sp;
   double bottomPadding = 20.sp;
+  @override
+  void dispose() {
+    Future.delayed(
+      Duration.zero,
+      () async {
+        await customCacheManager2.emptyCache();
+        await customCacheManager2.dispose();
+        controller.dispose();
+      },
+    );
+    super.dispose();
+  }
 
   @override
   void initState() {

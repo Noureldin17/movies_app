@@ -7,9 +7,7 @@ class MoviesScrollViewPlaceholder extends StatelessWidget {
   const MoviesScrollViewPlaceholder({
     super.key,
     required this.hasMore,
-    required this.moviesType,
   });
-  final String moviesType;
   final bool hasMore;
   @override
   Widget build(BuildContext context) {

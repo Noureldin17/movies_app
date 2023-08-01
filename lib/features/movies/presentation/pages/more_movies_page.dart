@@ -27,9 +27,23 @@ class _MoreMoviesPageState extends State<MoreMoviesPage> {
   int page = 2;
   bool actionBtnVisible = false;
   @override
+  void dispose() {
+    Future.delayed(
+      Duration.zero,
+      () async {
+        await customCacheManager.emptyCache();
+        await customCacheManager.dispose();
+      },
+    );
+    super.dispose();
+  }
+
+  @override
   void initState() {
-    customCacheManager = CacheManager(Config('customPosterKey',
-        stalePeriod: const Duration(minutes: 10), maxNrOfCacheObjects: 100));
+    customCacheManager = CacheManager(Config(
+        'customPosterKey${UniqueKey().toString()}',
+        stalePeriod: const Duration(minutes: 10),
+        maxNrOfCacheObjects: 100));
 
     movieList.addAll(widget.moreMoviesArgs.movieList);
     widgetList.addAll(widget.moreMoviesArgs.movieList.map((movie) =>
@@ -39,14 +53,6 @@ class _MoreMoviesPageState extends State<MoreMoviesPage> {
             movieType: widget.moreMoviesArgs.moviesType,
             cacheManager: customCacheManager)));
     super.initState();
-  }
-
-  @override
-  void deactivate() async {
-    movieList.clear();
-    await customCacheManager.emptyCache();
-    controller.dispose();
-    super.deactivate();
   }
 
   @override

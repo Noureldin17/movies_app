@@ -6,7 +6,9 @@ import 'package:movies_app/features/authentication/data/datasources/auth_remote_
 import 'package:movies_app/features/authentication/domain/models/request_token_model.dart';
 import 'package:movies_app/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
+import 'package:movies_app/features/authentication/domain/models/tmdb_user_model.dart';
 import 'package:movies_app/features/authentication/domain/repositories/auth_repository.dart';
+import 'package:movies_app/features/movies/domain/models/login_states_model.dart';
 import 'package:movies_app/features/movies/domain/models/movie_model.dart';
 
 class AuthenticationRepoImpl implements AuthenticationRepo {
@@ -33,7 +35,8 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
   }
 
   @override
-  Future<Either<Failure, Unit>> loginUser(Map<String, dynamic> params) async {
+  Future<Either<Failure, Unit>> loginUser(
+      Map<String, dynamic> params, bool keepMeSignedIn) async {
     final response = await _getRequestToken();
     final token1 = response.fold((l) => null, (r) => r.requestToken);
     if (await networkInfo.isConnected) {
@@ -44,7 +47,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
         final sessionId = await remoteDataSource
             .createSession(validateWithLoginToken.toJson());
         if (sessionId != null) {
-          localDataSource.saveSessionId(sessionId);
+          localDataSource.saveSessionId(sessionId, 'user', keepMeSignedIn);
           return const Right(unit);
         } else {
           return Left(InvalidCredentialsFailure());
@@ -64,10 +67,14 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
     if (await networkInfo.isConnected) {
       try {
         final id = await localDataSource.getSessionId();
-        localDataSource.deleteSessionId();
-        // ignore: unused_local_variable
-        final response = await remoteDataSource.deleteSession(id);
-        return const Right(unit);
+        if (id['key'] == "guest_session_id") {
+          localDataSource.deleteSessionId();
+          return const Right(unit);
+        } else {
+          localDataSource.deleteSessionId();
+          await remoteDataSource.deleteSession(id['value']);
+          return const Right(unit);
+        }
       } on InvalidCredentialsException {
         return Left(InvalidCredentialsFailure());
       } on ServerException {
@@ -84,7 +91,7 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
       try {
         final sessionId = await remoteDataSource.createGuestSession();
         if (sessionId != null) {
-          localDataSource.saveSessionId(sessionId);
+          localDataSource.saveSessionId(sessionId, 'guest', false);
           return const Right(unit);
         } else {
           return Left(InvalidCredentialsFailure());
@@ -100,9 +107,10 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
   }
 
   @override
-  Future<Either<Failure, bool>> checkOnBoardUser() async {
-    final value = await localDataSource.checkOnBoardUser();
-    return Right(value);
+  Future<Either<Failure, LoginStates>> checkLoginStatesUser() async {
+    final isOnboard = await localDataSource.checkOnBoardUser();
+    final keepSignedIn = await localDataSource.keepSignedIn();
+    return Right(LoginStates(isOnboard, keepSignedIn));
   }
 
   @override
@@ -120,7 +128,8 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
     if (await networkInfo.isConnected) {
       try {
         final sessionId = await localDataSource.getSessionId();
-        await remoteDataSource.addToWatchList(movieId, value, sessionId);
+        await remoteDataSource.addToWatchList(
+            movieId, value, sessionId['value']);
         return const Right(unit);
       } on ServerException {
         return Left(ServerFailure());
@@ -137,8 +146,67 @@ class AuthenticationRepoImpl implements AuthenticationRepo {
     if (await networkInfo.isConnected) {
       try {
         final sessionId = await localDataSource.getSessionId();
-        final response = await remoteDataSource.getWatchList(sessionId);
+        final response =
+            await remoteDataSource.getWatchList(sessionId['value']);
         return Right(response);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on UnAuthorizedException {
+        return Left(UnAuthorizedFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> addRating(int movieId, num value) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final sessionId = await localDataSource.getSessionId();
+        await remoteDataSource.addRating(
+            movieId, value, sessionId['value'], sessionId['key']);
+        return const Right(unit);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on UnAuthorizedException {
+        return Left(UnAuthorizedFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> deleteRating(int movieId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final sessionId = await localDataSource.getSessionId();
+        await remoteDataSource.deleteRating(
+            movieId, sessionId['value'], sessionId['key']);
+        return const Right(unit);
+      } on ServerException {
+        return Left(ServerFailure());
+      } on UnAuthorizedException {
+        return Left(UnAuthorizedFailure());
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, TMDBUser>> getUserDetails() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final sessionId = await localDataSource.getSessionId();
+        if (sessionId['key'] == "session_id") {
+          final response =
+              await remoteDataSource.getUserDetails(sessionId['value']);
+          return Right(response);
+        } else {
+          return Left(UnAuthorizedFailure());
+        }
       } on ServerException {
         return Left(ServerFailure());
       } on UnAuthorizedException {

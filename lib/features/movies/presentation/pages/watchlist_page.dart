@@ -19,11 +19,25 @@ class WatchListPage extends StatefulWidget {
 
 class _WatchListPageState extends State<WatchListPage> {
   late CacheManager customCacheManager;
+  @override
+  void dispose() {
+    Future.delayed(
+      Duration.zero,
+      () async {
+        await customCacheManager.emptyCache().then((value) async {
+          await customCacheManager.dispose();
+        });
+      },
+    );
+    super.dispose();
+  }
 
   @override
   void initState() {
-    customCacheManager = CacheManager(Config('customPosterKey',
-        stalePeriod: const Duration(minutes: 10), maxNrOfCacheObjects: 100));
+    customCacheManager = CacheManager(Config(
+        'customPosterKey${UniqueKey().toString()}',
+        stalePeriod: const Duration(minutes: 10),
+        maxNrOfCacheObjects: 100));
     BlocProvider.of<AuthenticationBloc>(context).add(GetWatchListEvent());
     super.initState();
   }
@@ -76,20 +90,34 @@ class _WatchListPageState extends State<WatchListPage> {
                         children: [
                           Padding(padding: EdgeInsets.only(top: 100.sp)),
                           SvgPicture.asset(
-                            'assets/posters/empty-amico.svg',
-                            height: 160.sp,
-                            width: 160.sp,
+                            'assets/icons/video-cross.svg',
+                            height: 120.sp,
+                            width: 120.sp,
+                            color: colors.primaryBlue,
                           ),
                           Padding(padding: EdgeInsets.only(top: 12.sp)),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 22.sp),
                             child: Text(
-                              'There are no movies in your watchlist',
+                              'Empty Watchlist',
                               textAlign: TextAlign.center,
                               style: GoogleFonts.roboto(
                                 color: Colors.white,
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.only(top: 6.sp)),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 40.sp),
+                            child: Text(
+                              'There are no movies in your watchlist, add more movies to your watchlist!',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.roboto(
+                                color: colors.primaryGrey,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.normal,
                               ),
                             ),
                           )
@@ -111,20 +139,34 @@ class _WatchListPageState extends State<WatchListPage> {
                   children: [
                     Padding(padding: EdgeInsets.only(top: 100.sp)),
                     SvgPicture.asset(
-                      'assets/posters/unauthorized.svg',
-                      height: 160.sp,
-                      width: 160.sp,
+                      'assets/icons/video-cross.svg',
+                      height: 120.sp,
+                      width: 120.sp,
+                      color: colors.primaryBlue,
                     ),
                     Padding(padding: EdgeInsets.only(top: 12.sp)),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 22.sp),
                       child: Text(
-                        state.message,
+                        "Unable to Access feature",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.roboto(
                           color: Colors.white,
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 6.sp)),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 40.sp),
+                      child: Text(
+                        state.message,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.roboto(
+                          color: colors.primaryGrey,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
                     )
