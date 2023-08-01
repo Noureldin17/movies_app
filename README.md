@@ -11,7 +11,6 @@ This app is a movie browsing app built using Flutter.
 <br/>
 <br/>   
 <br/>
-<br/>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/a18ca823-6dda-439a-9b8c-1cfbda7ca049 width=150 height=300> 
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/22483d88-9b43-4c87-875f-b71bf91c4d28 width=150 height=300>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/2c6bacb1-f64c-4394-9065-f5d34e8071ff width=150 height=300>
