@@ -1,6 +1,7 @@
-# movies_app
+# Movies App
 
 A new Flutter project.
+![Screen_Recording_20230802-004124_1](https://github.com/Noureldin17/movies_app/assets/90275962/a18ca823-6dda-439a-9b8c-1cfbda7ca049)
 
 ## Getting Started
 
