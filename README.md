@@ -9,6 +9,8 @@ The Application is mainly build using the TMDB API which feeds the app whith all
 <br> 
 Note: anyone with an account in TMDB can access this application.
 <hr> 
+
+<br> 
 ## Important Flutter Concepts 
 Some of the Important Concepts applied in this app were:
 - Clean Architecture 
