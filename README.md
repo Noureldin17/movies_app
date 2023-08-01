@@ -1,6 +1,8 @@
 # Movies App
-This app is a movie browsing app built using Flutter. The UI of this app is inspired by different designs (mainly: https://www.behance.net/gallery/171660715/Movie-Mobile-Application)
-
+This app is a movie browsing app built using Flutter. The UI of this app is inspired by different designs (mainly: https://www.behance.net/gallery/171660715/Movie-Mobile-Application). This app is built using Clean Architecture pattern which split each feature to different layers layers which are : 
+- Data Layer (Includes Local and Remote datasources)
+- Domain Layer (Includes Entities, Repositories, & Usecases)
+- Presentation Layer (Includes Bloc for representing states and emmiting events)
 
 <hr>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/232fc2e7-d040-41e2-ae0e-b21c3657a6d2 width=150 height=300> 
