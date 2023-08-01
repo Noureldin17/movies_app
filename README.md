@@ -58,10 +58,10 @@ Some of the Important Concepts applied in this app were:
 <br/>
 <br/>
 <br/>
-<img src=https://github.com/Noureldin17/movies_app/assets/90275962/78cad128-a79e-49e2-a5e6-234db302e33b width=150 height=300>
-<img src=https://github.com/Noureldin17/movies_app/assets/90275962/993f1ffd-c7e7-47ca-b28c-05a2614134aa width=150 height=500>
-<img src=https://github.com/Noureldin17/movies_app/assets/90275962/9626c4f3-bfb5-4c15-a38a-48787a060097 width=150 height=400>
+<img src=https://github.com/Noureldin17/movies_app/assets/90275962/9626c4f3-bfb5-4c15-a38a-48787a060097 width=150 height=500>
+<img src=https://github.com/Noureldin17/movies_app/assets/90275962/993f1ffd-c7e7-47ca-b28c-05a2614134aa width=150 height=400>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/f9d70d41-c20e-4ff6-b980-934fb9f77392 width=150 height=400>
+<img src=https://github.com/Noureldin17/movies_app/assets/90275962/78cad128-a79e-49e2-a5e6-234db302e33b width=150 height=300>
 
 
 
