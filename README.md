@@ -11,15 +11,10 @@ Note: anyone with an account in TMDB can access this application.
 <hr> 
 ## Important Flutter Concepts 
 Some of the Important Concepts applied in this app were:
-<br> 
 - Clean Architecture 
-<br> 
 - Bloc Pattern 
-<br> 
 - Dependency Injection using Get_it Library
-<br> 
 - Pagination 
-<br> 
 - Caching 
 <br> 
  
