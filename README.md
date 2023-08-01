@@ -6,7 +6,7 @@ This app is a movie browsing app built using Flutter. The UI of this app is insp
 
 The Application is mainly build using the TMDB API which feeds the app whith all the data. For more information about TMDB Api visit: https://developer.themoviedb.org/docs  
 Note: anyone with an account in TMDB can access this application.
-<hr> 
+
 ## Important Flutter Concepts
 Some of the Important Concepts applied in this app were:
 - Clean Architecture 
