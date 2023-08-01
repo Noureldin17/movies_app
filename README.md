@@ -1,17 +1,14 @@
 # Movies App
 
 A new Flutter project.
-<img src=https://github.com/Noureldin17/movies_app/assets/90275962/a18ca823-6dda-439a-9b8c-1cfbda7ca049 width=150 height=300>
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+<hr>
+<img src=https://github.com/Noureldin17/movies_app/assets/90275962/a18ca823-6dda-439a-9b8c-1cfbda7ca049 width=150 height=300> 
+<img src=https://github.com/Noureldin17/movies_app/assets/90275962/22483d88-9b43-4c87-875f-b71bf91c4d28 width=150 height=300>
+<img src=https://github.com/Noureldin17/movies_app/assets/90275962/2c6bacb1-f64c-4394-9065-f5d34e8071ff width=150 height=300>
+<img src=https://github.com/Noureldin17/movies_app/assets/90275962/f3c76f39-64df-42b7-8dd9-3e8345ffc6b9 width=150 height=300>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
