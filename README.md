@@ -1,7 +1,7 @@
 # Movies App
 
 A new Flutter project.
-<img src=https://github.com/Noureldin17/movies_app/assets/90275962/a18ca823-6dda-439a-9b8c-1cfbda7ca049 width=125 height=250>
+<img src=https://github.com/Noureldin17/movies_app/assets/90275962/a18ca823-6dda-439a-9b8c-1cfbda7ca049 width=150 height=300>
 
 ## Getting Started
 
