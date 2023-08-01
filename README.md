@@ -44,8 +44,8 @@ Some of the Important Concepts applied in this app were:
 <br/>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/ac2bf2e9-c755-4908-91b1-b1ee99e03db6 width=150 height=300>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/0e158948-dc58-4825-b3aa-45edd142552e width=150 height=300>
-<img src=https://github.com/Noureldin17/movies_app/assets/90275962/02d6b104-a02b-423b-8096-e03dd0eb5ac2 width=150 height=300>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/64f0e8ec-c91d-4b21-aec8-1041af9f7dda width=150 height=300>
+<img src=https://github.com/Noureldin17/movies_app/assets/90275962/02d6b104-a02b-423b-8096-e03dd0eb5ac2 width=150 height=300>
 
 
 <br/>
