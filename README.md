@@ -62,7 +62,7 @@ Some of the Important Concepts applied in this app were:
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/f9d70d41-c20e-4ff6-b980-934fb9f77392 width=150 height=400>
 <img src=https://github.com/Noureldin17/movies_app/assets/90275962/78cad128-a79e-49e2-a5e6-234db302e33b width=150 height=300>
 
-## Potential Improvements/additions
+## Potential Improvements/Additions
 The TMDB Api provides much information that could be used. The could be modified to include: 
 - Localization : TMDB provide translations for the content
 - TV Shows
